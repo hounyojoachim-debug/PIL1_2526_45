@@ -2,170 +2,29 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IFRI MentorLink</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        /* ================= DECORATION GENERALE (THEME CLAIR PAR DEFAUT) ================= */
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8f9fa; /* Gris très clair pour le fond de l'application */
-            color: #333333; /* Texte principal en gris foncé pour un meilleur contraste */
-            /* transition : Permet un passage fluide et doux (animation de 0.3s) entre le thème clair et le thème sombre */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* Style de la barre de navigation supérieure */
-        .navbar {
-            background-color: #ffffff !important;
-            border-bottom: 1px solid #eef2f5; /* Ligne de séparation très fine en bas de la navbar */
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        /* Liens personnalisés de la barre de menu */
-        .nav-link-custom {
-            color: #495057;
-            font-weight: 600; /* Texte semi-gras */
-            font-size: 0.95rem;
-            transition: color 0.2s ease;
-        }
-
-        /* Effet au survol des liens : changement de couleur vers le bleu principal */
-        .nav-link-custom:hover {
-            color: #0d6efd;
-        }
-
-        /* Arrondi standardisé pour toutes les grandes cartes (cards) du projet */
-        .rounded-4 {
-            border-radius: 1rem !important;
-        }
-
-        /* ================= OVERRIDES APPLIQUÉS EN MODE SOMBRE (DARK THEME) ================= */
-        /* Lorsque la classe '.dark-theme' est injectée sur la balise <body>, 
-            toutes les règles CSS ci-dessous s'activent pour modifier les couleurs en temps réel.
-        */
-        body.dark-theme {
-            background-color: #121212 !important; /* Fond noir profond */
-            color: #e0e0e0 !important; /* Texte blanc cassé pour ne pas agresser les yeux */
-        }
-        
-        body.dark-theme .navbar {
-            background-color: #1e1e1e !important; /* Fond gris foncé pour la navbar */
-            border-bottom: 1px solid #2d2d2d;
-        }
-
-        body.dark-theme .nav-link-custom {
-            color: #b0b0b0 !important; /* Liens gris clair en mode sombre */
-        }
-
-        body.dark-theme .nav-link-custom:hover {
-            color: #3b82f6 !important; /* Bleu plus lumineux au survol en mode sombre */
-        }
-
-        body.dark-theme .navbar-brand {
-            color: #3b82f6 !important;
-        }
-
-        /* Adaptation de toutes les cartes d'affichage au thème sombre */
-        body.dark-theme .card {
-            background-color: #1e1e1e !important;
-            border-color: #2d2d2d !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important; /* Ombre plus marquée pour détacher les cartes du fond noir */
-        }
-
-        /* Adaptation des zones grises, boîtes personnalisées et champs de saisie (inputs/textareas) */
-        body.dark-theme .bg-light,
-        body.dark-theme .custom-box,
-        body.dark-theme textarea.form-control,
-        body.dark-theme input.form-control {
-            background-color: #2a2a2a !important;
-            color: #ffffff !important;
-            border-color: #3a3a3a !important;
-        }
-
-        /* Forcer tous les titres et labels importants à passer en blanc pur */
-        body.dark-theme .text-dark, 
-        body.dark-theme h3, 
-        body.dark-theme h4, 
-        body.dark-theme h5, 
-        body.dark-theme .label-text {
-            color: #ffffff !important;
-        }
-
-        /* Passage des textes secondaires/mutés en gris moyen pour garder une hiérarchie visuelle */
-        body.dark-theme .text-muted, 
-        body.dark-theme .form-text,
-        body.dark-theme .small {
-            color: #a0a0a0 !important;
-        }
-    </style>
-    
-    <script>
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.classList.add('dark-theme');
-            // Dès que la structure du corps de page (body) est prête, on lui applique la classe
-            window.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add('dark-theme');
-            });
-        }
-    </script>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm py-3 mb-4">
-        <div class="container fluid px-4">
-            
-            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="/dashboard">
-                <i class="fas fa-graduation-cap me-2"></i>IFRI MentorLink
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-graduation-cap"></i> IFRI MentorLink
             </a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-lg-center gap-2 mt-3 mt-lg-0">
-                    
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom px-3" href="/dashboard">
-                            <i class="fas fa-th-large me-1 small text-muted"></i>Tableau de bord
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom px-3" href="/messages">
-                            <i class="far fa-comment-alt me-1 small text-muted"></i>Messagerie
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom px-3 me-lg-2" href="/settings">
-                            <i class="fas fa-sliders-h me-1 small text-muted"></i>Paramètres
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item pt-2 pt-lg-0">
-                        <a class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold shadow-sm" href="/login">
-                            Déconnexion
-                        </a>
-                    </li>
-                </ul>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('dashboard') }}">Tableau de bord</a>
+                <a class="nav-link" href="{{ url_for('messages') }}">Messagerie</a>
+                <a class="nav-link" href="{{ url_for('settings') }}">Paramètres</a>
+                <a class="nav-link text-danger" href="{{ url_for('logout') }}">Déconnexion</a>
             </div>
-            
         </div>
     </nav>
 
-    <div class="container fluid px-4 mb-5">
-        {% block content %}
-        {% endblock %}
+    <div class="container">
+        {% block content %}{% endblock %}
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

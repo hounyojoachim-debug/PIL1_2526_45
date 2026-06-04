@@ -2,65 +2,34 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - IFRI MentorLink</title>
-    
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-light d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+<body class="bg-light d-flex align-items-center justify-content-center" style="height: 100vh;">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-                
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold text-primary mb-1"><i class="fas fa-graduation-cap me-2"></i>IFRI MentorLink</h2>
-                    <p class="text-muted small px-3">Plateforme de mentorat de l'Institut de Formation et de Recherche en Informatique</p>
-                </div>
-
-                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                    <div class="card-body">
-                        
-                        <h3 class="fw-bold text-dark text-center mb-4">Connexion</h3>
-                        
-                        <form action="/login" method="POST">
-                            
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold text-secondary">Adresse Email Institutionnelle</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="far fa-envelope"></i></span>
-                                    <input type="email" name="email_inst" class="form-control form-control-lg bg-light border-start-0 rounded-end-3 fs-6" placeholder="exemple@ifri.uac.bj" required>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label class="form-label small fw-bold text-secondary">Mot de passe</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-lock"></i></span>
-                                    <input type="password" name="password" class="form-control form-control-lg bg-light border-start-0 rounded-end-3 fs-6" placeholder="*************" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 fw-bold fs-6 shadow-sm mb-3">Se connecter</button>
-                            
-                            <div class="text-center mb-3">
-                                <a href="/forgot-password" class="text-decoration-none small fw-bold">Mot de passe oublié ?</a>
-                            </div>
-                        </form>
-                        
-                        <div class="border-top pt-3 text-center">
-                            <p class="text-muted small mb-0">Nouveau sur la plateforme ? 
-                                <a href="/register" class="text-primary fw-bold text-decoration-none">Créer un compte</a>
-                            </p>
-                        </div>
-                        
-                    </div>
-                </div>
-                
+    <div class="card shadow-sm border-0 p-4" style="width: 400px;">
+        <h3 class="text-center mb-4 fw-bold text-primary">Connexion</h3>
+        
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required>
             </div>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-3">Se connecter</button>
+            
+            <div class="text-center">
+                <p class="small mb-1">
+                    <a href="{{ url_for('forgot_password') }}">Mot de passe oublié ?</a>
+                </p>
+                <p class="small">
+                    Pas encore de compte ? <a href="{{ url_for('register') }}">Créer un compte</a>
+                </p>
+            </div>
+        </form>
     </div>
-
 </body>
 </html>

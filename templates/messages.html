@@ -1,53 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messagerie - IFRI MentorLink</title>
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+{% extends "base.html" %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="/dashboard"><i class="fas fa-graduation-cap me-2"></i>IFRI MentorLink</a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/dashboard">Tableau de bord</a>
-                <a class="nav-link active fw-bold text-primary" href="/messages">Messagerie</a>
-                <a class="nav-link" href="/settings">Paramètres</a>
+{% block content %}
+<div class="card shadow-sm border-0" style="height: 70vh;">
+    <div class="row g-0 h-100">
+        <div class="col-4 border-end p-3">
+            <h5 class="fw-bold mb-3">Discussions</h5>
+            <div class="list-group list-group-flush">
+                {% for conv in conversations %}
+                <a href="#" class="list-group-item list-group-item-action">{{ conv.nom_contact }}</a>
+                {% endfor %}
             </div>
         </div>
-    </nav>
-
-    <div class="container">
-        <div class="card shadow-sm border-0" style="height: 75vh;">
-            <div class="row g-0 h-100">
-                <div class="col-4 border-end p-3">
-                    <h5 class="fw-bold mb-3">Discussions</h5>
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action active">Mentor - Jean DAKOU</a>
-                        <a href="#" class="list-group-item list-group-item-action">Étudiant - Marc L.</a>
-                    </div>
+        
+        <div class="col-8 d-flex flex-column">
+            <div class="p-3 border-bottom"><h6 class="fw-bold m-0">{{ nom_contact_actuel }}</h6></div>
+            <div class="flex-grow-1 p-3 bg-light overflow-auto">
+                {% for msg in messages %}
+                <div class="card mb-2 p-2 {% if msg.est_moi %}ms-auto bg-primary text-white{% endif %}">
+                    {{ msg.contenu }}
                 </div>
-                <div class="col-8 d-flex flex-column">
-                    <div class="p-3 border-bottom">
-                        <h6 class="fw-bold m-0">Jean DAKOU (Mentor)</h6>
-                    </div>
-                    <div class="flex-grow-1 p-3 bg-light overflow-auto">
-                        <p class="text-muted small text-center">Début de la conversation</p>
-                        <div class="card mb-2 p-2 w-75">Bonjour, comment puis-je t'aider sur le projet Python ?</div>
-                    </div>
-                    <div class="p-3 border-top">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Écrire un message...">
-                            <button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
-        </div>
+            </div>
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}
