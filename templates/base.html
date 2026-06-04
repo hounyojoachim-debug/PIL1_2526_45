@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFRI MentorLink</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Fond gris très clair style LinkedIn pour faire ressortir les cartes */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne et lisible */
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #0d6efd !important; /* Force la couleur bleu officiel Bootstrap sur le nom du projet */
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-graduation-cap me-2"></i>IFRI MentorLink</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Tableau de bord</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Messagerie</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-outline-primary btn-sm rounded-2 px-3 fw-bold" href="/login">Connexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {# ZONE JINJA2 : C'est le trou magique. 'login.html' ou 'register.html' viendront s'injecter ici #}
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
