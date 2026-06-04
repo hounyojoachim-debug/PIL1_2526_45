@@ -3,104 +3,107 @@
 {% block content %}
 <div class="row g-4">
     
-    <div class="col-lg-3">
-        <div class="card border-0 shadow-sm rounded-4 text-center p-3 bg-white">
+    <div class="col-12 col-lg-3">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
             <div class="card-body">
-                <div class="mb-3">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto shadow-sm" style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                
+                {% if utilisateur %}
+                    
+                    <div class="bg-primary text-white d-inline-flex align-items-center justify-content-center rounded-circle mb-3 fw-bold shadow-sm" style="width: 70px; height: 70px; font-size: 1.5rem;">
                         {{ utilisateur.prenom[0] }}{{ utilisateur.nom[0] }}
                     </div>
-                </div>
-                <h5 class="fw-bold text-dark mb-0">{{ utilisateur.prenom }} {{ utilisateur.nom }}</h5>
-                <p class="text-muted small mb-3">{{ utilisateur.filiere }} — {{ utilisateur.niveau }}</p>
+                    
+                    <h4 class="fw-bold text-dark mb-0">{{ utilisateur.prenom }} {{ utilisateur.nom }}</h4>
+                    <p class="text-muted small fw-medium mt-1">{{ utilisateur.filiere }} — {{ utilisateur.niveau }}</p>
+                    
+                    <hr class="text-muted my-3">
+                    
+                    <div class="text-start mb-3">
+                        <h6 class="fw-bold text-dark mb-2"><i class="fas fa-star text-warning me-2"></i>Mes points forts :</h6>
+                        <p class="text-muted small bg-light p-2 rounded-3">{{ utilisateur.competences }}</p>
+                    </div>
+                    
+                    <div class="text-start mb-4">
+                        <h6 class="fw-bold text-dark mb-2"><i class="fas fa-bolt text-danger me-2"></i>Mes besoins :</h6>
+                        <p class="text-muted small bg-light p-2 rounded-3">{{ utilisateur.lacunes }}</p>
+                    </div>
                 
-                <hr class="text-muted">
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-user-circle text-muted fa-3x mb-2"></i>
+                        <h6 class="fw-bold text-secondary">Session non synchronisée</h6>
+                        <p class="text-muted small mb-0">L'interface est prête. Connectez le système de session pour afficher le profil de l'étudiant.</p>
+                    </div>
+                {% endif %}
                 
-                <div class="text-start mb-3">
-                    <span class="text-secondary small fw-bold d-block mb-1"><i class="fas fa-star text-warning me-2"></i>Mes points forts :</span>
-                    <p class="text-dark small">{{ utilisateur.competences }}</p>
-                </div>
-                <div class="text-start">
-                    <span class="text-secondary small fw-bold d-block mb-1"><i class="fas fa-bolt text-danger me-2"></i>Mes besoins :</span>
-                    <p class="text-dark small">{{ utilisateur.lacunes }}</p>
-                </div>
-
-                <a href="#" class="btn btn-outline-primary btn-sm w-100 rounded-3 mt-3 fw-bold">Modifier le profil</a>
+                <hr class="text-muted my-3">
+                <a href="/edit-profile" class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-bold py-2">Modifier le profil</a>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-12 col-lg-6">
         
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-bold text-dark mb-0"><i class="fas fa-robot text-primary me-2"></i>Mentors recommandés</h5>
-            <span class="badge bg-primary rounded-pill small">Propulsé par l'IA</span>
+            <h5 class="fw-bold text-dark m-0 d-flex align-items-center">
+                <i class="fas fa-robot text-primary me-2 fa-lg"></i>Mentors recommandés
+            </h5>
+            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold">Propulsé par l'IA</span>
         </div>
 
-        {% if matchings %}
-            {% for match in matchings %}
-            <div class="card border-0 shadow-sm rounded-4 mb-3 p-3 bg-white border-start border-4 border-primary">
+        {% for matching in matchings %}
+            
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-3">
                 <div class="card-body">
-                    <div class="d-flex align-items-start">
-                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 50px; height: 50px; font-weight: bold;">
-                            {{ match.mentor_prenom[0] }}{{ match.mentor_nom[0] }}
+                    <div class="d-flex align-items-start gap-3">
+                        
+                        <div class="bg-secondary-subtle text-secondary d-flex align-items-center justify-content-center rounded-circle fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
+                            {{ matching.mentor_prenom[0] }}{{ matching.mentor_nom[0] }}
                         </div>
+                        
                         <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
                                 <div>
-                                    <h6 class="fw-bold text-dark mb-0">{{ match.mentor_prenom }} {{ match.mentor_nom }}</h6>
-                                    <p class="text-muted small mb-2">{{ match.mentor_filiere }} — {{ match.mentor_niveau }}</p>
+                                    <h5 class="fw-bold text-dark mb-0">{{ matching.mentor_prenom }} {{ matching.mentor_nom }}</h5>
+                                    <p class="text-muted small mb-2">{{ matching.mentor_filiere }} — {{ matching.mentor_niveau }}</p>
                                 </div>
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-3 px-2 py-1 fw-bold">
-                                    {{ match.score }}% de Match
-                                </span>
+                                <span class="badge bg-primary text-white rounded-pill fw-bold">{{ matching.score }}% de Match</span>
                             </div>
-                            <p class="text-secondary small mb-3">
-                                {{ match.description_offre }}
-                            </p>
-                            <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded-3">
-                                <span class="text-muted small"><i class="far fa-clock me-1"></i> Dispo : {{ match.disponibilites }}</span>
-                                <a href="/message/{{ match.mentor_id }}" class="btn btn-primary btn-sm rounded-2 fw-bold px-3">Contacter</a>
+                            
+                            <p class="text-secondary small bg-light p-2 rounded-3 mb-3">{{ matching.description_offre }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top">
+                                <span class="text-muted small"><i class="far fa-clock me-2"></i>{{ matching.disponibilites }}</span>
+                                <button class="btn btn-primary btn-sm rounded-3 px-4 fw-bold">Contacter</button>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
-            {% endfor %}
+            
         {% else %}
-            <div class="text-center p-5 bg-white rounded-4 shadow-sm">
-                <i class="fas fa-search text-muted fa-2x mb-3"></i>
-                <p class="text-muted mb-0">Aucun mentor correspondant trouvé pour le moment.</p>
+            <div class="card border-0 shadow-sm rounded-4 p-5 bg-white text-center">
+                <i class="fas fa-database text-muted fa-3x mb-3"></i>
+                <h6 class="fw-bold text-secondary">Aucun algorithme de matching connecté</h6>
+                <p class="text-muted small mb-0">La structure d'affichage adaptative est prête. Connectez la table des utilisateurs pour lister dynamiquement les mentors correspondants.</p>
             </div>
-        {% endif %}
-
+        {% endfor %}
+        
     </div>
 
-    <div class="col-lg-3">
-        
+    <div class="col-12 col-lg-3">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
             <div class="card-body">
-                <h6 class="fw-bold text-dark mb-3"><i class="fas fa-comments text-primary me-2"></i>Discussions</h6>
-                
-                {% if conversations %}
-                    {% for conv in conversations %}
-                    <a href="/chat/{{ conv.id }}" class="text-decoration-none d-flex align-items-center mb-3 pb-2 border-bottom border-light">
-                        <div class="bg-light text-primary rounded-circle d-flex align-items-center justify-content-center me-2 small fw-bold" style="width: 35px; height: 35px;">
-                            {{ conv.destinataire_prenom[0] }}
-                        </div>
-                        <div class="flex-grow-1 text-truncate">
-                            <h6 class="small fw-bold text-dark mb-0">{{ conv.destinataire_prenom }} {{ conv.destinataire_nom }}</h6>
-                            <p class="text-muted small mb-0 text-truncate">{{ conv.dernier_message }}</p>
-                        </div>
-                    </a>
-                    {% endfor %}
-                {% else %}
-                    <p class="text-muted small text-center my-3">Aucune discussion en cours.</p>
-                {% endif %}
-
+                <h5 class="fw-bold text-dark mb-3 d-flex align-items-center">
+                    <i class="fas fa-comments text-primary me-2"></i>Discussions
+                </h5>
+                <div class="text-center py-4">
+                    <i class="far fa-comment-alt text-muted mb-2 fa-2x"></i>
+                    <p class="text-muted small mb-0">Aucune discussion active pour le moment.</p>
+                </div>
             </div>
         </div>
-
     </div>
 
 </div>

@@ -1,104 +1,143 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - IFRI MentorLink</title>
+    
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        .register-card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        /* Aligne joliment les titres de section du formulaire */
+        .section-title {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body class="d-flex align-items-center justify-content-center py-5" style="min-height: 100vh;">
 
-{% block content %}
-<div class="row justify-content-center mb-5">
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-            <div class="card-body">
+    <div class="container-fluid px-3 px-md-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
                 
-                <div class="text-center mb-4">
-                    <div class="bg-light d-inline-flex p-3 rounded-circle text-primary mb-2">
-                        <i class="fas fa-user-plus fa-2x"></i>
+                <div class="card register-card bg-white p-4">
+                    <div class="card-body">
+                        
+                        <div class="text-center mb-4">
+                            <i class="fas fa-user-plus text-primary fa-2x mb-2"></i>
+                            <h3 class="fw-bold text-dark m-0">Créer un compte</h3>
+                            <p class="text-muted small">Rejoignez la communauté de mentorat de l'IFRI</p>
+                        </div>
+
+                        <form action="/login" method="GET">
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:24px; height:24px;"><i class="fas fa-user text-xs"></i></span>
+                                <h6 class="section-title fw-bold text-primary m-0">Informations personnelles</h6>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Prénom</label>
+                                    <input type="text" name="prenom" class="form-control bg-light rounded-3" placeholder="Ex: Charnel" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Nom</label>
+                                    <input type="text" name="nom" class="form-control bg-light rounded-3" placeholder="Ex: DAKOU" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Adresse Email</label>
+                                    <input type="email" name="email" class="form-control bg-light rounded-3" placeholder="exemple@ifri.uac.bj" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Numéro de téléphone</label>
+                                    <input type="tel" name="telephone" class="form-control bg-light rounded-3" placeholder="Ex: +229 01XXXXXXXX" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold text-secondary">Mot de passe</label>
+                                    <input type="password" name="password" class="form-control bg-light rounded-3" placeholder="Créez un mot de passe sécurisé" required>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:24px; height:24px;"><i class="fas fa-graduation-cap text-xs"></i></span>
+                                <h6 class="section-title fw-bold text-primary m-0">Cursus Universitaire</h6>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Filière</label>
+                                    <select name="filiere" class="form-select bg-light rounded-3" required>
+                                        <option value="" disabled selected hidden>Choisir votre filière...</option>
+                                        <option value="IM">Internet et Multimédia (IM)</option>
+                                        <option value="GL">Génie Logiciel (GL)</option>
+                                        <option value="SI">Sécurité Informatique (SI)</option>
+                                        <option value="IA">Intelligence Artificielle (IA)</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Niveau d'étude</label>
+                                    <select name="niveau" class="form-select bg-light rounded-3" required>
+                                        <option value="" disabled selected hidden>Choisir votre niveau...</option>
+                                        <option value="L1">Licence 1 (L1)</option>
+                                        <option value="L2">Licence 2 (L2)</option>
+                                        <option value="L3">Licence 3 (L3)</option>
+                                        <option value="M1">Master 1 (M1)</option>
+                                        <option value="M2">Master 2 (M2)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary-subtle text-primary rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:24px; height:24px;"><i class="fas fa-handshake text-xs"></i></span>
+                                <h6 class="section-title fw-bold text-primary m-0">Profil de Mentorat</h6>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Mes compétences (Points forts)</label>
+                                    <textarea name="competences" class="form-control bg-light rounded-3" rows="3" placeholder="Ex: HTML/CSS, Base de données, Design UI, Python..."></textarea>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label small fw-semibold text-secondary">Mes lacunes (Besoins d'aide)</label>
+                                    <textarea name="lacunes" class="form-control bg-light rounded-3" rows="3" placeholder="Ex: Algorithmique, Analyse mathématique, Architecture des PC..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold text-secondary">Mes disponibilités horaires</label>
+                                    <input type="text" name="disponibilites" class="form-control bg-light rounded-3" placeholder="Ex: Week-ends, Soirs après 17h...">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 fw-bold fs-6 shadow-sm mt-2">
+                                S'inscrire sur MentorLink
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-4 border-top pt-3">
+                            <p class="text-muted small mb-0">Vous avez déjà un compte ? 
+                                <a href="/login" class="text-primary fw-bold text-decoration-none">Se connecter</a>
+                            </p>
+                        </div>
+
                     </div>
-                    <h3 class="fw-bold text-dark">Créer un compte</h3>
-                    <p class="text-muted small">Rejoignez la communauté de mentorat de l'IFRI</p>
                 </div>
-
-                <form action="/register" method="POST">
-                    
-                    <h5 class="text-primary fw-bold mb-3"><i class="fas fa-id-card me-2"></i>Informations personnelles</h5>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label for="firstName" class="form-label text-secondary small fw-bold">Prénom</label>
-                            <input type="text" class="form-control bg-light" id="firstName" name="prenom" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="lastName" class="form-label text-secondary small fw-bold">Nom</label>
-                            <input type="text" class="form-control bg-light" id="lastName" name="nom" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="email" class="form-label text-secondary small fw-bold">Adresse Email</label>
-                            <input type="email" class="form-control bg-light" id="email" name="email" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phone" class="form-label text-secondary small fw-bold">Numéro de téléphone</label>
-                            <input type="tel" class="form-control bg-light" id="phone" name="telephone" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="password" class="form-label text-secondary small fw-bold">Mot de passe</label>
-                            <input type="password" class="form-control bg-light" id="password" name="mot_de_passe" required>
-                        </div>
-                    </div>
-
-                    <hr class="text-muted my-4">
-
-                    <h5 class="text-primary fw-bold mb-3"><i class="fas fa-graduation-cap me-2"></i>Cursus Universitaire</h5>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label for="filiere" class="form-label text-secondary small fw-bold">Filière</label>
-                            <select class="form-select bg-light" id="filiere" name="filiere" required>
-                                <option value="" selected disabled>Choisir votre filière...</option>
-                                <option value="IM">Internet et Multimédia (IM)</option>
-                                <option value="GL">Génie Logiciel (GL)</option>
-                                <option value="IA">Intelligence Artificielle (IA)</option>
-                                <option value="SI">Systèmes d'Information (SI)</option>
-                                <option value="SE_IoT">Sécurité & IoT</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="level" class="form-label text-secondary small fw-bold">Niveau d'étude</label>
-                            <select class="form-select bg-light" id="level" name="niveau" required>
-                                <option value="" selected disabled>Choisir votre niveau...</option>
-                                <option value="L1">Licence 1</option>
-                                <option value="L2">Licence 2</option>
-                                <option value="L3">Licence 3</option>
-                                <option value="M1">Master 1</option>
-                                <option value="M2">Master 2</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <hr class="text-muted my-4">
-
-                    <h5 class="text-primary fw-bold mb-3"><i class="fas fa-user-sliders me-2"></i>Profil de Mentorat</h5>
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label for="skills" class="form-label text-secondary small fw-bold">Mes compétences (Points forts)</label>
-                            <textarea class="form-control bg-light" id="skills" name="competences" rows="3" placeholder="Ex: HTML/CSS, Base de données..."></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="lacunes" class="form-label text-secondary small fw-bold">Mes lacunes (Besoins d'aide)</label>
-                            <textarea class="form-control bg-light" id="lacunes" name="lacunes" rows="3" placeholder="Ex: Algorithmique, Analyse..."></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label for="disponibilites" class="form-label text-secondary small fw-bold">Mes disponibilités horaires</label>
-                            <input type="text" class="form-control bg-light" id="disponibilites" name="disponibilites" placeholder="Ex: Week-ends, Soirs après 17h...">
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-bold shadow-sm mt-3">
-                        S'inscrire sur MentorLink
-                    </button>
-                    
-                </form>
-
-                <div class="text-center mt-4">
-                    <span class="text-muted small">Vous avez déjà un compte ?</span>
-                    <a href="/login" class="text-decoration-none small fw-bold ms-1">Se connecter</a>
-                </div>
-
+                
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

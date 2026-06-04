@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4 m-0 w-100">
+    <div class="col-12">
+        
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <div class="card-body">
+                
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark"><i class="fas fa-sliders-h text-primary me-2"></i>Paramètres de l'application</h3>
+                    <p class="text-muted small">Configurez vos préférences d'utilisation et de notifications sur IFRI MentorLink</p>
+                </div>
+
+                <form action="/dashboard" method="GET">
+                    
+                    <h5 class="fw-bold text-secondary mb-3 fs-6 text-uppercase"><i class="far fa-bell me-2"></i>Notifications</h5>
+                    <div class="bg-light p-3 rounded-3 mb-4 custom-box">
+                        
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="notifEmail" name="notif_email" checked>
+                            <label class="form-check-input-label fw-medium text-dark small label-text" for="notifEmail">Notifications par Email</label>
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">Recevoir un mail lorsqu'un mentor accepte votre demande de contact.</div>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="notifMsg" name="notif_msg" checked>
+                            <label class="form-check-input-label fw-medium text-dark small label-text" for="notifMsg">Alertes de nouveaux messages</label>
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">Être notifié en temps réel sur le navigateur pour les nouvelles discussions.</div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold text-secondary mb-3 fs-6 text-uppercase"><i class="fas fa-shield-alt me-2"></i>Confidentialité & Visibilité</h5>
+                    <div class="bg-light p-3 rounded-3 mb-4 custom-box">
+                        
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="visuProfil" name="visu_profil" checked>
+                            <label class="form-check-input-label fw-medium text-dark small label-text" for="visuProfil">Profil public (Visible à l'IFRI)</label>
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">Permettre aux autres étudiants inscrits de trouver votre profil via la recherche.</div>
+                        </div>
+                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="maskLevel" name="mask_level">
+                            <label class="form-check-input-label fw-medium text-dark small label-text" for="maskLevel">Masquer mes lacunes sur mon profil public</label>
+                            <div class="form-text text-muted" style="font-size: 0.75rem;">Vos besoins d'aide ne seront visibles que par les mentors recommandés par l'IA.</div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold text-secondary mb-3 fs-6 text-uppercase"><i class="fas fa-paint-brush me-2"></i>Affichage</h5>
+                    <div class="bg-light p-3 rounded-3 mb-4 custom-box">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-medium text-dark small d-block label-text">Mode Sombre (Dark Mode)</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">Basculer l'interface sur un thème visuel sombre.</span>
+                            </div>
+                            <div class="form-check form-switch m-0">
+                                <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 pt-2">
+                        <a href="/dashboard" class="btn btn-light btn-lg w-50 rounded-3 fw-bold fs-6">Retour</a>
+                        <button type="submit" class="btn btn-primary btn-lg w-50 rounded-3 fw-bold fs-6 shadow-sm">Enregistrer les préférences</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    // Récupération de l'élément HTML de l'interrupteur
+    const darkModeSwitch = document.getElementById('darkModeSwitch');
+    
+    /* SYNCHRONISATION INITIALE :
+        Si l'étudiant navigue sur cette page et que le mode sombre était déjà activé globalement, 
+        on force l'interrupteur à se mettre en position "coché" (true).
+    */
+    if (localStorage.getItem('theme') === 'dark') {
+        darkModeSwitch.checked = true;
+    }
+
+    /*
+        ÉCOUTEUR D'ÉVÉNEMENT (EventListener) :
+        Surveille en temps réel quand l'étudiant clique sur l'interrupteur.
+    */
+    darkModeSwitch.addEventListener('change', () => {
+        if (darkModeSwitch.checked) {
+            // Étape A : Appliquer immédiatement la classe dark-theme sur le body actuel
+            document.body.classList.add('dark-theme');
+            // Étape B : Enregistrer définitivement le choix "dark" dans la mémoire du navigateur
+            localStorage.setItem('theme', 'dark');
+        } else {
+            // Étape A : Retirer immédiatement la classe pour repasser en thème clair
+            document.body.classList.remove('dark-theme');
+            // Étape B : Enregistrer le choix "light" dans la mémoire du navigateur
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
+{% endblock %}
