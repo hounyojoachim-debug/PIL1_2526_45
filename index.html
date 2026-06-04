@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de projet — IFRI_MentorLink | PIL1_2526_45</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu:   #1a3a5c;
+            --vert:   #2e7d32;
+            --orange: #e65100;
+        }
+        body { font-family: 'DM Sans', sans-serif; color: #333; line-height: 1.75; }
+        h2   { font-family: 'Lora', serif; color: var(--bleu); border-left: 5px solid var(--bleu); padding-left: 1rem; margin-bottom: 2rem; }
+        h4   { color: var(--bleu); margin-top: 2rem; margin-bottom: .75rem; }
+        section { padding: 4rem 0; border-bottom: 1px solid #dee2e6; }
+        .hero { background: linear-gradient(135deg, var(--bleu) 0%, #0d2137 100%); color: white; padding: 5rem 0; }
+        .membre-card { background: white; border: 1px solid #dee2e6; border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; transition: box-shadow .2s; }
+        .membre-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; }
+        .tech-badge { display: inline-block; padding: .25rem .75rem; border-radius: 20px; font-size: .82rem; font-weight: 500; margin: .2rem; }
+        .screenshot-box { background: #f0f4f8; border: 2px dashed #b0bec5; border-radius: 10px; padding: 2.5rem 1rem; text-align: center; color: #78909c; font-size: .9rem; min-height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: var(--bleu); color: white; border-radius: 50%; font-size: .8rem; font-weight: 700; flex-shrink: 0; margin-right: .5rem; }
+        .fonc-card { border: none; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.08); margin-bottom: 2rem; overflow: hidden; }
+        .fonc-card .card-header { background: var(--bleu); color: white; font-weight: 600; font-size: 1rem; padding: .85rem 1.25rem; }
+        code { background: #e8eaf6; color: #1a237e; padding: .1rem .4rem; border-radius: 4px; }
+        pre  { background: #1e1e1e; color: #d4d4d4; border-radius: 8px; padding: 1rem; font-size: .88rem; }
+        .alerte-fanelle { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 6px; padding: .85rem 1rem; font-size: .88rem; margin: 1rem 0; color: #5d4037; }
+        footer { background: var(--bleu); color: #cfd8dc; padding: 2.5rem 0; text-align: center; }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background:var(--bleu)">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">IFRI_MentorLink</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav ms-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="#groupe">Le groupe</a></li>
+                <li class="nav-item"><a class="nav-link" href="#fonctionnement">Fonctionnement</a></li>
+                <li class="nav-item"><a class="nav-link" href="#architecture">Architecture</a></li>
+                <li class="nav-item"><a class="nav-link" href="#deploiement">Déploiement</a></li>
+                <li class="nav-item"><a class="nav-link" href="#manuel">Manuel</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<div class="hero">
+    <div class="container text-center">
+        <p class="text-uppercase small mb-2" style="letter-spacing:.15em;opacity:.7">Projet intégrateur 2025-2026 · IFRI · UAC</p>
+        <h1 class="display-4 fw-bold mb-3">IFRI_MentorLink</h1>
+        <p class="lead mb-4" style="opacity:.85">Plateforme de mise en relation mentorale entre étudiants IFRI</p>
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+            <span class="badge fs-6 px-3 py-2" style="background:rgba(255,255,255,.15)">Groupe 45</span>
+            <span class="badge fs-6 px-3 py-2" style="background:rgba(255,255,255,.15)">PIL1_2526_45</span>
+            <span class="badge fs-6 px-3 py-2" style="background:rgba(255,255,255,.15)">Licence 1 · 2025-2026</span>
+        </div>
+    </div>
+</div>
+
+
+<!-- ============================================================
+     SECTION 1 — PRÉSENTATION DU GROUPE
+     ============================================================ -->
+<section id="groupe">
+<div class="container">
+
+    <h2>1. Présentation du groupe</h2>
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  FANELLE — À REMPLIR MAINTENANT (Section description)   ║
+    ╚══════════════════════════════════════════════════════════╝
+    Écris 3 à 4 phrases qui décrivent le projet.
+    Réponds à ces 3 questions dans ton texte :
+      1. C'est quoi IFRI_MentorLink ?
+      2. Quel problème ça résout pour les étudiants ?
+      3. Comment ça marche en résumé (les 3 modules) ?
+
+    EXEMPLE (tu peux adapter) :
+    "IFRI_MentorLink est une application web développée dans le
+    cadre du projet intégrateur 2025-2026 de l'IFRI. Elle permet
+    aux étudiants de l'IFRI de se connecter entre eux pour du
+    mentorat académique et professionnel. Un algorithme propose
+    automatiquement les meilleures correspondances entre mentors
+    et mentorés selon leurs compétences, leurs horaires et leur
+    filière. Une messagerie intégrée leur permet ensuite d'organiser
+    leurs sessions de travail."
+
+    COMMENT FAIRE : Remplace le texte entre les balises <p> ci-dessous.
+    -->
+    <div class="row mb-5">
+        <div class="col-lg-9">
+            <h4>Description du projet</h4>
+            <p class="lead" style="color:#555">
+                [À REMPLIR — Écris 3 à 4 phrases qui décrivent le projet. Voir les instructions dans les commentaires HTML au-dessus de ce texte.]
+            </p>
+        </div>
+    </div>
+
+    <h4>Les 7 membres du groupe</h4>
+    <div class="row">
+
+        <!-- Tobie -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#c62828;color:white">T</div>
+                    <div>
+                        <div class="fw-bold">AMADOU Geduld Tobie Vincent</div>
+                        <div class="text-muted small">Licence SI · Chef de projet</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Chef de projet · Architecture BDD · Sécurité (auth + bcrypt) · Revue du code · Gestionnaire Git</p>
+                <!--
+                FANELLE — Contribution de Tobie (à remplir le 09 juin)
+                Quand l'appli sera faite, écris ici ce que Tobie a concrètement codé.
+                -->
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin — ce que Tobie a réellement produit]</em></p>
+            </div>
+        </div>
+
+        <!-- Fritzell -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#1565c0;color:white">F</div>
+                    <div>
+                        <div class="fw-bold">ADANMITONDE Dona Fritzell Junior</div>
+                        <div class="text-muted small">Licence SI</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Backend Flask — Module Profils (création/modification profils, compétences, disponibilités)</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+        <!-- Moubarak -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#1565c0;color:white">M</div>
+                    <div>
+                        <div class="fw-bold">SOULE Moubarak Issotina</div>
+                        <div class="text-muted small">Licence SI</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Backend Flask — Module Messagerie (Flask-SocketIO, conversations, notifications en temps réel)</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+        <!-- Fanelle (toi) -->
+        <div class="col-md-6">
+            <div class="membre-card" style="border-color:var(--vert);border-width:2px">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:var(--vert);color:white">A</div>
+                    <div>
+                        <div class="fw-bold">ASSOGBAHOU Bidossessi Fanelle Auriane
+                            <span class="badge ms-1" style="background:var(--vert);font-size:.65rem">C'est toi !</span>
+                        </div>
+                        <div class="text-muted small">Licence GL</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Qualité + Tests + Rapport HTML (ce fichier) + Documentation + Manuel d'utilisation</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+        <!-- Joachim -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#00695c;color:white">J</div>
+                    <div>
+                        <div class="fw-bold">HOUNYO ASSOU Joachim Roméo</div>
+                        <div class="text-muted small">Licence GL</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Base de données MySQL — Création des tables, fichier schema.sql final, données de test</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+        <!-- Curtis -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#4a148c;color:white">C</div>
+                    <div>
+                        <div class="fw-bold">CAKPO Curtis Ulysse Sèmèvo</div>
+                        <div class="text-muted small">Licence IA</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Algorithme de matching — Score de compatibilité (compétences + horaires + filière)</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+        <!-- Charnel -->
+        <div class="col-md-6">
+            <div class="membre-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="avatar" style="background:#e65100;color:white">D</div>
+                    <div>
+                        <div class="fw-bold">DAKOU MANDO KOUESSOPA Charnel</div>
+                        <div class="text-muted small">Licence IM</div>
+                    </div>
+                </div>
+                <p class="mb-1 small"><strong>Rôle :</strong> Frontend complet — Toutes les pages HTML/CSS/JS avec Bootstrap 5</p>
+                <p class="mb-0 small text-muted"><strong>Contribution :</strong> <em>[À compléter le 09 juin]</em></p>
+            </div>
+        </div>
+
+    </div><!-- fin row membres -->
+</div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 2 — FONCTIONNEMENT INTERNE
+     ============================================================ -->
+<section id="fonctionnement" style="background:#f8f9fa">
+<div class="container">
+
+    <h2>2. Mode de fonctionnement interne</h2>
+
+    <div class="row">
+        <div class="col-lg-9">
+
+            <h4>Démarche suivie</h4>
+            <!--
+            ╔══════════════════════════════════════════════════════════╗
+            ║  FANELLE — À REMPLIR MAINTENANT                         ║
+            ╚══════════════════════════════════════════════════════════╝
+            Raconte en 1 paragraphe comment le groupe a travaillé.
+            Réponds à ces questions :
+              - Comment avez-vous démarré ? (réunion du 01 juin)
+              - Comment avez-vous choisi les rôles ?
+              - Comment vous communiquez entre vous ?
+              - Comment vous organisez le code sur GitHub ?
+
+            EXEMPLE :
+            "Le groupe 45 a démarré son travail le 01 juin 2026 lors
+            de la séance de lancement à l'IFRI. Après avoir analysé
+            ensemble le cahier des charges, nous avons réparti les
+            tâches selon les filières et compétences de chacun.
+            Notre coordination s'appuie sur un groupe WhatsApp pour
+            la communication quotidienne et sur GitHub pour le
+            versionnement du code. Chaque membre travaille sur sa
+            propre branche Git et soumet son travail régulièrement."
+            -->
+            <p>[À REMPLIR — Écris 4 à 5 phrases qui racontent comment le groupe s'est organisé depuis le début. Voir l'exemple dans les commentaires HTML.]</p>
+
+            <h4>Outils de collaboration</h4>
+            <ul>
+                <li><strong>Communication :</strong> WhatsApp (groupe dédié au projet)</li>
+                <li><strong>Versionnement du code :</strong> Git + GitHub
+                    (<a href="https://github.com/hounyojoachim-debug/PIL1_2526_45" target="_blank">PIL1_2526_45</a>)
+                </li>
+                <li><strong>Travail en parallèle :</strong> Chaque membre travaille sur sa propre branche Git pour éviter les conflits</li>
+                <li><strong>Intégration :</strong> Tobie (chef de projet) s'occupe de fusionner toutes les branches dans la branche principale</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <h4>Chronologie du projet</h4>
+    <!--
+    FANELLE — CHRONOLOGIE (à remplir au fur et à mesure)
+    Ce tableau documente les étapes importantes du projet.
+    Certaines lignes sont déjà remplies. Pour les lignes [À REMPLIR],
+    écris simplement ce qui s'est passé lors de cet événement.
+    Exemple pour le 04 juin : "Validation du schéma de la base de données
+    par l'encadrement. Lancement du développement sur toutes les branches."
+    -->
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th style="min-width:130px">Date</th>
+                    <th>Événement</th>
+                    <th>Résultat / Ce qui s'est passé</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01 juin 2026</td>
+                    <td>Séance de lancement — IFRI, présentiel (13h-17h)</td>
+                    <td>Présentation officielle du projet, prise en main de Git, démarrage du groupe</td>
+                </tr>
+                <tr>
+                    <td>03 juin 2026</td>
+                    <td>Session en ligne (15h-17h) — Bonnes pratiques collaboratives</td>
+                    <td>Organisation du groupe, attribution des rôles, plan de travail défini</td>
+                </tr>
+                <tr>
+                    <td>04 juin 2026</td>
+                    <td>Session avec l'encadrement — en ligne (13h-18h)</td>
+                    <td>
+                        <!--
+                        FANELLE — Remplis cette case.
+                        Qu'est-ce qui s'est passé lors de la session du 04 juin ?
+                        Le groupe a présenté quoi ? Les encadrants ont dit quoi ?
+                        -->
+                        [À REMPLIR — Ce qui s'est passé lors de la session du 04 juin avec les encadrants]
+                    </td>
+                </tr>
+                <tr>
+                    <td>08-09 juin 2026</td>
+                    <td>Session avec l'encadrement — présentiel (13h-18h)</td>
+                    <td><em>[À remplir après la session]</em></td>
+                </tr>
+                <tr>
+                    <td>10 juin 2026</td>
+                    <td>Dépôt final sur GitHub (deadline 23h59)</td>
+                    <td><em>[À remplir le jour J]</em></td>
+                </tr>
+                <tr>
+                    <td>12-13 juin 2026</td>
+                    <td>Présentation finale et évaluation</td>
+                    <td><em>[À remplir après la soutenance]</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 3 — ARCHITECTURE ET CONCEPTION
+     (Cette section est DÉJÀ REMPLIE — ne modifie rien ici)
+     ============================================================ -->
+<section id="architecture">
+<div class="container">
+
+    <h2>3. Description de la conception</h2>
+    <p class="text-muted mb-4">Cette section est entièrement remplie — tu n'as rien à modifier.</p>
+
+    <!-- Stack technique -->
+    <h4>Stack technique</h4>
+    <div class="row mb-4">
+        <div class="col-lg-10">
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <span class="me-2 fw-bold small">Frontend :</span>
+                <span class="tech-badge" style="background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">HTML5</span>
+                <span class="tech-badge" style="background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">CSS3</span>
+                <span class="tech-badge" style="background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">JavaScript</span>
+                <span class="tech-badge" style="background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9">Bootstrap 5</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <span class="me-2 fw-bold small">Backend :</span>
+                <span class="tech-badge" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7">Python 3</span>
+                <span class="tech-badge" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7">Flask</span>
+                <span class="tech-badge" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7">Flask-SQLAlchemy</span>
+                <span class="tech-badge" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7">Flask-Login</span>
+                <span class="tech-badge" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7">Flask-SocketIO</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <span class="me-2 fw-bold small">Base de données :</span>
+                <span class="tech-badge" style="background:#fff3e0;color:#e65100;border:1px solid #ffcc80">MySQL 8</span>
+                <span class="tech-badge" style="background:#fff3e0;color:#e65100;border:1px solid #ffcc80">SQLAlchemy ORM</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <span class="me-2 fw-bold small">Sécurité :</span>
+                <span class="tech-badge" style="background:#fce4ec;color:#880e4f;border:1px solid #f48fb1">bcrypt</span>
+                <span class="tech-badge" style="background:#fce4ec;color:#880e4f;border:1px solid #f48fb1">Sessions sécurisées</span>
+            </div>
+            <div class="d-flex flex-wrap align-items-center">
+                <span class="me-2 fw-bold small">Versionnement :</span>
+                <span class="tech-badge" style="background:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">Git</span>
+                <span class="tech-badge" style="background:#f3e5f5;color:#4a148c;border:1px solid #ce93d8">GitHub</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Les 3 modules -->
+    <h4>Les 3 modules de l'application</h4>
+    <div class="row g-3 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header fw-bold" style="background:var(--bleu);color:white">Module 1 — Comptes & Profils</div>
+                <div class="card-body small">
+                    <ul class="mb-0">
+                        <li>Inscription avec vérification email/téléphone unique</li>
+                        <li>Connexion sécurisée (mot de passe hashé avec bcrypt)</li>
+                        <li>Modification du profil à tout moment</li>
+                        <li>Gestion des compétences maîtrisées et des lacunes</li>
+                        <li>Gestion des disponibilités horaires</li>
+                        <li>Réinitialisation du mot de passe</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header fw-bold" style="background:var(--vert);color:white">Module 2 — Matching</div>
+                <div class="card-body small">
+                    <ul class="mb-0">
+                        <li>Publication d'offres et demandes de mentorat</li>
+                        <li>Algorithme de matching automatique</li>
+                        <li>Score basé sur : compétences communes + horaires + filière</li>
+                        <li>Affichage des résultats avec score de compatibilité</li>
+                        <li>Acceptation ou refus d'une correspondance</li>
+                        <li>Recherche par matière ou horaire</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header fw-bold" style="background:#1565c0;color:white">Module 3 — Messagerie</div>
+                <div class="card-body small">
+                    <ul class="mb-0">
+                        <li>Messagerie en temps réel (Flask-SocketIO)</li>
+                        <li>Conversation créée automatiquement après un matching accepté</li>
+                        <li>Historique des conversations conservé</li>
+                        <li>Notifications en temps réel pour les nouveaux messages</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Structure BDD -->
+    <h4>Structure de la base de données — 10 tables</h4>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" style="font-size:.88rem">
+            <thead class="table-dark">
+                <tr>
+                    <th>Table</th>
+                    <th>Module</th>
+                    <th>Rôle dans l'application</th>
+                    <th>Colonnes principales</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><code>users</code></td><td>1</td><td>Tous les comptes utilisateurs</td><td>id, nom, prenom, email, telephone, mot_de_passe, filiere, niveau, photo, bio</td></tr>
+                <tr><td><code>competences</code></td><td>1</td><td>Liste des matières disponibles (Algo, Python, Réseaux…)</td><td>id, nom, categorie</td></tr>
+                <tr><td><code>user_competences</code></td><td>1</td><td>Compétences de chaque utilisateur : ce qu'il maîtrise ou veut améliorer</td><td>user_id, competence_id, type (maitrise / a_ameliorer)</td></tr>
+                <tr><td><code>disponibilites</code></td><td>1</td><td>Créneaux horaires disponibles par utilisateur</td><td>id, user_id, jour, heure_debut, heure_fin</td></tr>
+                <tr><td><code>offres</code></td><td>2</td><td>Offres et demandes de mentorat publiées</td><td>id, user_id, type (offre/demande), format_seance, description, statut</td></tr>
+                <tr><td><code>offre_competences</code></td><td>2</td><td>Matières ciblées par chaque offre ou demande</td><td>offre_id, competence_id</td></tr>
+                <tr><td><code>matchings</code></td><td>2</td><td>Paires mentor-mentoré proposées par l'algorithme</td><td>id, mentor_id, mentore_id, score (0-100), statut</td></tr>
+                <tr><td><code>conversations</code></td><td>3</td><td>Espace de messagerie lié à un matching accepté</td><td>id, matching_id, date_creation</td></tr>
+                <tr><td><code>messages</code></td><td>3</td><td>Messages individuels dans les conversations</td><td>id, conversation_id, expediteur_id, contenu, date_envoi, lu</td></tr>
+                <tr><td><code>notifications</code></td><td>3</td><td>Alertes en temps réel pour les utilisateurs</td><td>id, user_id, contenu, type, lu, date_creation</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 4 — DÉPLOIEMENT
+     ============================================================ -->
+<section id="deploiement" style="background:#f8f9fa">
+<div class="container">
+
+    <h2>4. Instructions de déploiement</h2>
+
+    <div class="alerte-fanelle">
+        ⚠️ <strong>Note pour Fanelle :</strong> La section déploiement est partiellement remplie.
+        Les étapes 1, 2, 3, 5 et 6 sont déjà là. <strong>L'étape 4 (configuration)</strong> sera
+        donnée par Tobie le 09 juin. Tu n'as rien d'autre à faire ici pour l'instant.
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+
+            <h4>Prérequis</h4>
+            <p>Pour installer et faire fonctionner l'application, la machine doit avoir :</p>
+            <ul>
+                <li>Python 3.10 ou supérieur</li>
+                <li>MySQL 8.0 ou supérieur</li>
+                <li>Git</li>
+                <li>Un navigateur web récent (Chrome, Firefox, Edge)</li>
+            </ul>
+
+            <h4>Étapes d'installation</h4>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">1</span>
+                <div class="flex-grow-1">
+                    <strong>Cloner le dépôt GitHub</strong>
+                    <pre><code>git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
+cd PIL1_2526_45</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">2</span>
+                <div class="flex-grow-1">
+                    <strong>Créer un environnement Python et installer les dépendances</strong>
+                    <pre><code>python -m venv venv
+source venv/bin/activate    # Linux / Mac
+venv\Scripts\activate       # Windows
+pip install -r requirements.txt</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">3</span>
+                <div class="flex-grow-1">
+                    <strong>Créer la base de données MySQL</strong>
+                    <pre><code>mysql -u root -p &lt; schema.sql</code></pre>
+                    <small class="text-muted">Cette commande crée automatiquement toutes les tables avec les données de test.</small>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">4</span>
+                <div class="flex-grow-1">
+                    <strong>Configurer les variables d'environnement</strong>
+                    <!--
+                    FANELLE — Cette étape sera donnée par Tobie le 09 juin.
+                    Remplace le texte ci-dessous par les instructions qu'il te donnera.
+                    -->
+                    <p class="text-muted fst-italic">[À compléter le 09 juin — Tobie fournira les détails de configuration du fichier .env]</p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">5</span>
+                <div class="flex-grow-1">
+                    <strong>Lancer l'application</strong>
+                    <pre><code>cd backend
+python app.py</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-3">
+                <span class="step-badge">6</span>
+                <div class="flex-grow-1">
+                    <strong>Ouvrir dans le navigateur</strong>
+                    <p>Accéder à <a href="http://localhost:5000">http://localhost:5000</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</section>
+
+
+<!-- ============================================================
+     SECTION 5 — MANUEL D'UTILISATION
+     ============================================================ -->
+<section id="manuel">
+<div class="container">
+
+    <h2>5. Manuel d'utilisation</h2>
+
+    <div class="alerte-fanelle">
+        ⚠️ <strong>Note pour Fanelle :</strong> Le texte du manuel est entièrement rédigé.
+        <strong>Tu n'as rien à écrire pour l'instant.</strong>
+        Ce que tu feras le 09 juin : remplacer chaque zone grise "📸 Capture d'écran"
+        par une vraie image de l'application.
+        Instructions pour les images : quand l'appli sera prête, fais un screenshot de chaque
+        page → enregistre en PNG dans un dossier <code>images/</code> → remplace la balise
+        <code>&lt;div class="screenshot-box"&gt;</code> par
+        <code>&lt;img src="images/nom-du-fichier.png" class="img-fluid rounded"&gt;</code>
+    </div>
+
+    <!-- FONCTIONNALITÉ 1 : S'inscrire -->
+    <div class="fonc-card card mt-4">
+        <div class="card-header">📝 Fonctionnalité 1 — Créer un compte (S'inscrire)</div>
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-7">
+                    <p>Pour commencer à utiliser IFRI_MentorLink, chaque étudiant doit créer un compte :</p>
+                    <ol>
+                        <li>Ouvrir l'application dans le navigateur</li>
+                        <li>Cliquer sur le bouton <strong>"S'inscrire"</strong> sur la page d'accueil</li>
+                        <li>Remplir le formulaire :
+                            <ul class="mt-1">
+                                <li>Nom et prénom</li>
+                                <li>Adresse email <em>(doit être unique)</em></li>
+                                <li>Numéro de téléphone <em>(doit être unique)</em></li>
+                                <li>Mot de passe <em>(minimum 8 caractères)</em></li>
+                                <li>Filière et niveau d'études</li>
+                            </ul>
+                        </li>
+                        <li>Sélectionner ses compétences maîtrisées <em>(ce que tu peux enseigner)</em></li>
+                        <li>Sélectionner ses lacunes <em>(ce dans quoi tu as besoin d'aide)</em></li>
+                        <li>Cliquer sur <strong>"Créer mon compte"</strong></li>
+                    </ol>
+                </div>
+                <div class="col-md-5">
+                    <div class="screenshot-box">
+                        📸 Capture d'écran<br><strong>Page d'inscription</strong><br>
+                        <small class="mt-2">[À remplacer par l'image réelle le 09 juin]</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FONCTIONNALITÉ 2 : Se connecter -->
+    <div class="fonc-card card">
+        <div class="card-header">🔑 Fonctionnalité 2 — Se connecter</div>
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-7">
+                    <ol>
+                        <li>Cliquer sur <strong>"Se connecter"</strong> depuis la page d'accueil</li>
+                        <li>Saisir son adresse email <em>ou</em> son numéro de téléphone</li>
+                        <li>Saisir son mot de passe</li>
+                        <li>Cliquer sur <strong>"Connexion"</strong></li>
+                        <li>En cas d'oubli de mot de passe → cliquer sur <strong>"Mot de passe oublié"</strong> et suivre les instructions</li>
+                    </ol>
+                </div>
+                <div class="col-md-5">
+                    <div class="screenshot-box">📸 Capture d'écran<br><strong>Page de connexion</strong><br><small>[À remplacer le 09 juin]</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FONCTIONNALITÉ 3 : Profil -->
+    <div class="fonc-card card">
+        <div class="card-header">👤 Fonctionnalité 3 — Gérer son profil</div>
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-7">
+                    <ol>
+                        <li>Une fois connecté, cliquer sur son prénom en haut à droite</li>
+                        <li>Cliquer sur <strong>"Mon profil"</strong></li>
+                        <li>Modifier ses informations personnelles</li>
+                        <li>Ajouter ou modifier ses compétences maîtrisées et ses lacunes</li>
+                        <li>Définir ses disponibilités horaires (jours et heures)</li>
+                        <li>Ajouter une photo de profil <em>(optionnel)</em></li>
+                        <li>Cliquer sur <strong>"Enregistrer"</strong></li>
+                    </ol>
+                </div>
+                <div class="col-md-5">
+                    <div class="screenshot-box">📸 Capture d'écran<br><strong>Page profil</strong><br><small>[À remplacer le 09 juin]</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FONCTIONNALITÉ 4 : Matching -->
+    <div class="fonc-card card">
+        <div class="card-header">🔗 Fonctionnalité 4 — Trouver un mentor ou offrir du mentorat</div>
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-7">
+                    <ol>
+                        <li>Cliquer sur <strong>"Trouver un mentor"</strong> ou <strong>"Proposer du mentorat"</strong> dans le menu</li>
+                        <li>Publier une offre ou une demande en précisant :
+                            <ul class="mt-1">
+                                <li>Les matières concernées</li>
+                                <li>Ses disponibilités</li>
+                                <li>Le format : présentiel, en ligne, ou les deux</li>
+                            </ul>
+                        </li>
+                        <li>L'algorithme calcule automatiquement les meilleures correspondances</li>
+                        <li>Les résultats s'affichent avec un <strong>score de compatibilité</strong> (0 à 100)</li>
+                        <li>Consulter les profils proposés</li>
+                        <li>Cliquer sur <strong>"Accepter"</strong> pour démarrer un mentorat avec cette personne</li>
+                    </ol>
+                </div>
+                <div class="col-md-5">
+                    <div class="screenshot-box">📸 Capture d'écran<br><strong>Résultats du matching</strong><br><small>[À remplacer le 09 juin]</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FONCTIONNALITÉ 5 : Messagerie -->
+    <div class="fonc-card card">
+        <div class="card-header">💬 Fonctionnalité 5 — Envoyer et recevoir des messages</div>
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+                <div class="col-md-7">
+                    <ol>
+                        <li>Après qu'un matching est accepté, une conversation est créée automatiquement</li>
+                        <li>Cliquer sur <strong>"Mes messages"</strong> dans le menu principal</li>
+                        <li>Sélectionner la conversation souhaitée dans la liste</li>
+                        <li>Taper son message dans la zone de texte en bas de l'écran</li>
+                        <li>Appuyer sur <strong>Entrée</strong> ou cliquer sur <strong>"Envoyer"</strong></li>
+                        <li>Les messages s'affichent <strong>en temps réel</strong> — pas besoin de recharger la page</li>
+                        <li>Une <strong>notification</strong> apparaît automatiquement à la réception d'un nouveau message</li>
+                    </ol>
+                </div>
+                <div class="col-md-5">
+                    <div class="screenshot-box">📸 Capture d'écran<br><strong>Interface messagerie</strong><br><small>[À remplacer le 09 juin]</small></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+    <div class="container">
+        <p class="mb-1 fw-bold fs-5">IFRI_MentorLink</p>
+        <p class="mb-1">Projet intégrateur 2025-2026 · Groupe 45 · PIL1_2526_45</p>
+        <p class="mb-2">Institut de Formation et de Recherche en Informatique — Université d'Abomey-Calavi</p>
+        <p class="mb-0 small" style="opacity:.7">
+            Supervision : M. Ratheil HOUNDJI ·
+            Encadrants : M. Armand ACCROMBESSI · Mme Maryse GAHOU
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
