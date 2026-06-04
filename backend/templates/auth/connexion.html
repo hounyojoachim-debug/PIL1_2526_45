@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion — IFRI MentorLink{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Se connecter
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <!-- Messages flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('auth.connexion') }}" novalidate>
+
+                        <!-- Email ou téléphone -->
+                        <div class="mb-3">
+                            <label for="identifiant" class="form-label fw-semibold">
+                                Email ou téléphone
+                            </label>
+                            <input type="text" class="form-control" id="identifiant"
+                                   name="identifiant"
+                                   placeholder="email@exemple.com ou 197221065"
+                                   required autofocus>
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="mb-4">
+                            <label for="mot_de_passe" class="form-label fw-semibold">
+                                Mot de passe
+                            </label>
+                            <input type="password" class="form-control" id="mot_de_passe"
+                                   name="mot_de_passe" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Se connecter
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="card-footer text-center py-3 text-muted">
+                    Pas encore de compte ?
+                    <a href="{{ url_for('auth.inscription') }}" class="text-primary fw-semibold">
+                        S'inscrire
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
