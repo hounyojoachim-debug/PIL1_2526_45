@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Messagerie — IFRI MentorLink{% endblock %}
+
+{% block content %}
+<div class="row g-4 mt-2">
+
+    <!-- Liste des conversations -->
+    <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="fw-bold mb-0">
+                    <i class="far fa-comment-alt text-primary me-2"></i>Mes discussions
+                </h6>
+            </div>
+            <div class="card-body p-0">
+                {% if conversations %}
+                    {% for conv in conversations %}
+                    <a href="{{ url_for('messagerie.chat', conversation_id=conv.id) }}"
+                       class="d-flex align-items-center gap-3 px-3 py-3
+                              text-decoration-none border-bottom text-dark
+                              conversation-item">
+
+                        <!-- Avatar -->
+                        <div class="bg-primary text-white rounded-circle d-flex
+                                    align-items-center justify-content-center fw-bold flex-shrink-0"
+                             style="width:42px;height:42px;font-size:0.9rem;">
+                            {% if conv.mentor_id == current_user.id %}
+                                {{ conv.mentore.prenom[0] }}{{ conv.mentore.nom[0] }}
+                            {% else %}
+                                {{ conv.mentor.prenom[0] }}{{ conv.mentor.nom[0] }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Infos -->
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="fw-semibold small text-truncate">
+                                {% if conv.mentor_id == current_user.id %}
+                                    {{ conv.mentore.prenom }} {{ conv.mentore.nom }}
+                                {% else %}
+                                    {{ conv.mentor.prenom }} {{ conv.mentor.nom }}
+                                {% endif %}
+                            </div>
+                            <div class="text-muted small text-truncate">
+                                {% if conv.messages %}
+                                    {{ conv.messages[-1].contenu }}
+                                {% else %}
+                                    Démarrer la discussion
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if conv.non_lus > 0 %}
+                        <span class="badge bg-primary rounded-pill">{{ conv.non_lus }}</span>
+                        {% endif %}
+
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-5 px-3">
+                        <i class="far fa-comment-dots fa-2x mb-2 d-block"></i>
+                        <small>Aucune discussion pour l'instant.<br>
+                        Contacte un mentor depuis le tableau de bord.</small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Zone vide si aucune conversation sélectionnée -->
+    <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 h-100
+                    d-flex align-items-center justify-content-center">
+            <div class="text-center text-muted py-5">
+                <i class="far fa-comments fa-3x mb-3 d-block"></i>
+                <p class="mb-0">Sélectionne une discussion pour commencer.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

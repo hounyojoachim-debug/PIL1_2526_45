@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Discussion — IFRI MentorLink{% endblock %}
+
+{% block content %}
+<div class="row g-4 mt-2">
+    <div class="col-12 col-lg-8 mx-auto">
+        <div class="card border-0 shadow-sm rounded-4" style="height:75vh;display:flex;flex-direction:column;">
+
+            <!-- En-tête conversation -->
+            <div class="card-header bg-white border-0 py-3 d-flex align-items-center gap-3">
+                <a href="{{ url_for('messagerie.conversations') }}"
+                   class="btn btn-sm btn-outline-secondary rounded-pill">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center
+                            justify-content-center fw-bold"
+                     style="width:38px;height:38px;font-size:0.85rem;">
+                    {{ interlocuteur.prenom[0] }}{{ interlocuteur.nom[0] }}
+                </div>
+                <div>
+                    <div class="fw-bold small">{{ interlocuteur.prenom }} {{ interlocuteur.nom }}</div>
+                    <small class="text-muted">{{ interlocuteur.filiere }} — {{ interlocuteur.niveau }}</small>
+                </div>
+            </div>
+
+            <!-- Zone messages -->
+            <div class="card-body overflow-auto flex-grow-1 p-3" id="zone-messages">
+                {% for msg in messages %}
+                <div class="d-flex mb-3
+                     {% if msg.expediteur_id == current_user.id %}justify-content-end{% endif %}">
+                    <div class="px-3 py-2 rounded-4 small
+                         {% if msg.expediteur_id == current_user.id %}
+                             bg-primary text-white
+                         {% else %}
+                             bg-light text-dark border
+                         {% endif %}"
+                         style="max-width:70%;">
+                        {{ msg.contenu }}
+                        <div class="mt-1 opacity-75" style="font-size:0.7rem;">
+                            {{ msg.date_envoi.strftime('%H:%M') }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Zone saisie -->
+            <div class="card-footer bg-white border-0 py-3 px-3">
+                <form id="form-message" class="d-flex gap-2">
+                    <input type="text" id="input-message" class="form-control rounded-pill"
+                           placeholder="Écrire un message..." autocomplete="off">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SocketIO temps réel -->
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const socket      = io();
+const convId      = {{ conversation.id }};
+const currentId   = {{ current_user.id }};
+const zoneMsg     = document.getElementById('zone-messages');
+const formMsg     = document.getElementById('form-message');
+const inputMsg    = document.getElementById('input-message');
+
+// Rejoindre la room de cette conversation
+socket.emit('join_conversation', { conversation_id: convId });
+
+// Réception d'un message en temps réel
+socket.on('new_message', function(msg) {
+    afficher(msg);
+    scrollBas();
+});
+
+// Envoi d'un message
+formMsg.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const texte = inputMsg.value.trim();
+    if (!texte) return;
+    socket.emit('send_message', { conversation_id: convId, contenu: texte });
+    inputMsg.value = '';
+});
+
+function afficher(msg) {
+    const moi = msg.expediteur_id === currentId;
+    zoneMsg.innerHTML += `
+        <div class="d-flex mb-3 ${moi ? 'justify-content-end' : ''}">
+            <div class="px-3 py-2 rounded-4 small ${moi ? 'bg-primary text-white' : 'bg-light text-dark border'}"
+                 style="max-width:70%;">
+                ${msg.contenu}
+                <div class="mt-1 opacity-75" style="font-size:0.7rem;">${msg.heure}</div>
+            </div>
+        </div>`;
+}
+
+function scrollBas() {
+    zoneMsg.scrollTop = zoneMsg.scrollHeight;
+}
+
+// Scroll initial
+scrollBas();
+</script>
+{% endblock %}
