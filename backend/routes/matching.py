@@ -1,3 +1,13 @@
+from flask import Blueprint, jsonify
+from flask_login import login_required, current_user
+from extensions import db
+from models.user import User
+from models.matching import Matching
+from models.competence import UserCompetence
+from models.disponibilite import Disponibilite
+
+matching_bp = Blueprint('matching', __name__)
+
 def calculer_score(mentor, mentore, disponibilites):
 
     # COMPETENCES
@@ -32,3 +42,35 @@ def calculer_score(mentor, mentore, disponibilites):
         score_filiere = 0
 
     return round(min(score_competences + score_dispos + score_filiere, 100.0), 2)
+
+
+@matching_bp.route('/matching/suggestions', methods=['GET'])
+@login_required
+def suggestions():
+    tous_users = User.query.filter(User.id != current_user.id, User.actif == True).all()
+
+    disponibilites = {}
+    for u in tous_users + [current_user]:
+        dispos = Disponibilite.query.filter_by(user_id=u.id).all()
+        disponibilites[u.id] = [f"{d.jour}_{d.heure_debut}" for d in dispos]
+
+    def profil(u):
+        competences = UserCompetence.query.filter_by(user_id=u.id).all()
+        return {
+            "id": u.id,
+            "filiere": u.filiere,
+            "points_forts":  [c.competence_id for c in competences if c.type == 'maitrise'],
+            "points_faibles": [c.competence_id for c in competences if c.type == 'besoin']
+        }
+
+    moi = profil(current_user)
+    resultats = []
+
+    for u in tous_users:
+        p = profil(u)
+        score = calculer_score(p, moi, disponibilites)
+        if score > 0:
+            resultats.append({'user_id': u.id, 'nom': u.nom, 'prenom': u.prenom, 'score': score})
+
+    resultats.sort(key=lambda x: x['score'], reverse=True)
+    return jsonify(resultats)
