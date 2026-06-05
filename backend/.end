@@ -1,0 +1,1 @@
+DATA_BASE_URL=mysql+pymysql://root:Joachim@8@localhost/ifri_mentorlink 
