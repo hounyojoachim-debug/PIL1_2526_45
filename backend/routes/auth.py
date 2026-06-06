@@ -154,10 +154,4 @@ def deconnexion():
 @auth_bp.route('/tableau-de-bord')
 @login_required
 def tableau_de_bord():
-    """Page de test post-connexion — à supprimer en Branche 04."""
-    return (
-        f'<h2>✅ Connexion réussie — Bienvenue {current_user.prenom} {current_user.nom} !</h2>'
-        f'<p>Email : {current_user.email}</p>'
-        f'<p>Filière : {current_user.filiere} · Niveau : {current_user.niveau}</p>'
-        f'<a href="{url_for("auth.deconnexion")}">Se déconnecter</a>'
-    )
+    return render_template('dashboard.html')
