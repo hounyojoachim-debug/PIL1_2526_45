@@ -1,9 +1,1 @@
-venv/
-.env
-__pycache__/
-*.pyc
-backend/static/uploads/*
-!backend/static/uploads/.gitkeep
-.DS_Store
-.idea/
-.vscode/
+backend/.env
