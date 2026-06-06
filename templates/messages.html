@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm border-0" style="height: 70vh;">
+    <div class="row g-0 h-100">
+        <div class="col-4 border-end p-3">
+            <h5 class="fw-bold mb-3">Discussions</h5>
+            <div class="list-group list-group-flush">
+                {% for conv in conversations %}
+                <a href="#" class="list-group-item list-group-item-action">{{ conv.nom_contact }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="col-8 d-flex flex-column">
+            <div class="p-3 border-bottom"><h6 class="fw-bold m-0">{{ nom_contact_actuel }}</h6></div>
+            <div class="flex-grow-1 p-3 bg-light overflow-auto">
+                {% for msg in messages %}
+                <div class="card mb-2 p-2 {% if msg.est_moi %}ms-auto bg-primary text-white{% endif %}">
+                    {{ msg.contenu }}
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

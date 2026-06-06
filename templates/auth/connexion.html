@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Connexion — IFRI MentorLink{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0">
+                    <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('auth.connexion') }}" novalidate>
+                    <div class="mb-3">
+                        <label for="identifiant" class="form-label fw-semibold">
+                            Email ou téléphone
+                        </label>
+                        <input type="text" class="form-control" id="identifiant"
+                               name="identifiant"
+                               placeholder="email@exemple.com ou 97000000"
+                               required autofocus>
+                    </div>
+                    <div class="mb-4">
+                        <label for="mot_de_passe" class="form-label fw-semibold">
+                            Mot de passe
+                        </label>
+                        <input type="password" class="form-control" id="mot_de_passe"
+                               name="mot_de_passe" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Se connecter
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3 text-muted small">
+                Pas encore de compte ?
+                <a href="{{ url_for('auth.inscription') }}" class="fw-semibold">
+                    S'inscrire
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

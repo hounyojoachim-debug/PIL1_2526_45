@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Publier une offre — IFRI MentorLink{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white border-0 py-3">
+                <h6 class="fw-bold mb-0">
+                    <i class="fas fa-plus-circle text-primary me-2"></i>
+                    Publier une offre de mentorat
+                </h6>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('offres.creer') }}">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Type</label>
+                        <select class="form-select" name="type_offre" required>
+                            <option value="offre">Je propose du mentorat</option>
+                            <option value="demande">Je cherche un mentor</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea class="form-control" name="description" rows="3"
+                                  placeholder="Décris ce que tu proposes ou recherches..."
+                                  required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Format</label>
+                        <select class="form-select" name="format">
+                            <option value="presentiel">Présentiel</option>
+                            <option value="en_ligne">En ligne</option>
+                            <option value="les_deux">Les deux</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Disponibilités</label>
+                        <input type="text" class="form-control" name="disponibilites"
+                               placeholder="Ex : week-ends, soirs après 18h">
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary rounded-pill fw-bold">
+                            Publier
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
