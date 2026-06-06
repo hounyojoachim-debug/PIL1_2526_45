@@ -4,7 +4,7 @@
 # Auteur : SOULE Moubarak (base) · complété B05
 # =============================================================
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
 from flask_socketio import emit, join_room
 from extensions import db, socketio
@@ -58,7 +58,7 @@ def conversations():
             ),
         })
 
-    return jsonify(result), 200
+    return render_template('messagerie/conversations.html', conversations=conversations)
 
 
 @messagerie_bp.route('/conversations/<int:conv_id>', methods=['GET'])
