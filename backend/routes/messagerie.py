@@ -21,7 +21,7 @@ messagerie_bp = Blueprint('messagerie', __name__)
 
 @messagerie_bp.route('/conversations', methods=['GET'])
 @login_required
-def liste_conversations():
+def conversations():
     """
     Liste toutes les conversations de l'utilisateur connecté.
     Un utilisateur voit une conversation s'il est mentor OU mentoré
