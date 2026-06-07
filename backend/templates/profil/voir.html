@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Profil — {{ user.prenom }} {{ user.nom }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card mx-auto" style="max-width:600px;">
+    <div class="card-body text-center">
+      <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center mb-3"
+           style="width:80px;height:80px;font-size:2rem;">
+        {{ user.prenom[0] }}{{ user.nom[0] }}
+      </div>
+      <h4>{{ user.prenom }} {{ user.nom }}</h4>
+      <p class="text-muted">{{ user.filiere }} — {{ user.niveau }}</p>
+      {% if user.bio %}
+        <p>{{ user.bio }}</p>
+      {% endif %}
+      {% if user.id == current_user.id %}
+        <a href="{{ url_for('profil.modifier_profil') }}" class="btn btn-outline-primary">Modifier mon profil</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

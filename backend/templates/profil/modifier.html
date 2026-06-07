@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Modifier mon profil{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card mx-auto" style="max-width:600px;">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Modifier mon profil</h5>
+      <form method="POST" action="{{ url_for('profil.sauvegarder_profil') }}">
+        <div class="mb-3">
+          <label class="form-label">Nom</label>
+          <input type="text" name="nom" class="form-control" value="{{ user.nom }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Prénom</label>
+          <input type="text" name="prenom" class="form-control" value="{{ user.prenom }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Biographie</label>
+          <textarea name="bio" class="form-control" rows="3">{{ user.bio or '' }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
