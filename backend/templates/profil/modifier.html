@@ -2,10 +2,11 @@
 {% block title %}Modifier mon profil{% endblock %}
 {% block content %}
 <div class="container mt-4">
-  <div class="card mx-auto" style="max-width:600px;">
+  <div class="card mx-auto" style="max-width:700px;">
     <div class="card-body">
       <h5 class="card-title mb-4">Modifier mon profil</h5>
       <form method="POST" action="{{ url_for('profil.sauvegarder_profil') }}">
+
         <div class="mb-3">
           <label class="form-label">Nom</label>
           <input type="text" name="nom" class="form-control" value="{{ user.nom }}" required>
@@ -18,7 +19,66 @@
           <label class="form-label">Biographie</label>
           <textarea name="bio" class="form-control" rows="3">{{ user.bio or '' }}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+
+        <hr>
+        <h6 class="fw-bold mb-3">Compétences maîtrisées (points forts)</h6>
+        <div class="row mb-4">
+          {% for c in competences %}
+          <div class="col-6 col-md-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox"
+                     name="competences_maitrise" value="{{ c.id }}"
+                     id="m_{{ c.id }}"
+                     {% if c.id in user_maitrise %}checked{% endif %}>
+              <label class="form-check-label" for="m_{{ c.id }}">{{ c.nom }}</label>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <h6 class="fw-bold mb-3">Ce que tu veux améliorer (lacunes)</h6>
+        <div class="row mb-4">
+          {% for c in competences %}
+          <div class="col-6 col-md-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox"
+                     name="competences_ameliorer" value="{{ c.id }}"
+                     id="a_{{ c.id }}"
+                     {% if c.id in user_ameliorer %}checked{% endif %}>
+              <label class="form-check-label" for="a_{{ c.id }}">{{ c.nom }}</label>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <hr>
+        <h6 class="fw-bold mb-3">Disponibilités</h6>
+        {% set jours_semaine = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'] %}
+        {% for i in range(3) %}
+        <div class="row g-2 mb-2">
+          <div class="col-md-4">
+            <select name="dispo_jour" class="form-select form-select-sm">
+              <option value="">-- Jour --</option>
+              {% for j in jours_semaine %}
+              <option value="{{ j }}"
+                {% if disponibilites|length > i and disponibilites[i].jour == j %}selected{% endif %}>
+                {{ j|capitalize }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <input type="time" name="dispo_debut" class="form-control form-control-sm"
+                   value="{{ disponibilites[i].heure_debut if disponibilites|length > i else '' }}">
+          </div>
+          <div class="col-md-4">
+            <input type="time" name="dispo_fin" class="form-control form-control-sm"
+                   value="{{ disponibilites[i].heure_fin if disponibilites|length > i else '' }}">
+          </div>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">Enregistrer</button>
       </form>
     </div>
   </div>

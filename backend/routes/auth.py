@@ -8,6 +8,8 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from extensions import db
 from models.user import User
+from models.competence import UserCompetence
+from models.disponibilite import Disponibilite
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -74,9 +76,26 @@ def inscription():
         # Hash bcrypt via la méthode du model — JAMAIS stocker en clair
         user.set_password(mdp)
 
-        db.session.add(user)    # Prépare l'INSERT
-        db.session.commit()     # Exécute l'INSERT dans MySQL
+        db.session.add(user)
+        db.session.commit()
 
+        # Sauvegarder compétences maîtrisées
+        for cid in request.form.getlist('competences_maitrise'):
+            db.session.add(UserCompetence(user_id=user.id, competence_id=int(cid), type='maitrise'))
+
+        # Sauvegarder lacunes
+        for cid in request.form.getlist('competences_ameliorer'):
+            db.session.add(UserCompetence(user_id=user.id, competence_id=int(cid), type='a_ameliorer'))
+
+        # Sauvegarder disponibilités
+        jours  = request.form.getlist('dispo_jour')
+        debuts = request.form.getlist('dispo_debut')
+        fins   = request.form.getlist('dispo_fin')
+        for jour, debut, fin in zip(jours, debuts, fins):
+            if jour and debut and fin:
+                db.session.add(Disponibilite(user_id=user.id, jour=jour, heure_debut=debut, heure_fin=fin))
+
+        db.session.commit()
         flash('Compte créé avec succès ! Connecte-toi.', 'success')
         return redirect(url_for('auth.connexion'))
 
