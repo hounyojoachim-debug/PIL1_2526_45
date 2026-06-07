@@ -44,7 +44,7 @@ def calculer_score(mentor, mentore, disponibilites):
     return round(min(score_competences + score_dispos + score_filiere, 100.0), 2)
 
 
-@matching_bp.route('/matching/suggestions', methods=['GET'])
+@matching_bp.route('/suggestions', methods=['GET'])
 @login_required
 def suggestions():
     tous_users = User.query.filter(User.id != current_user.id, User.actif == True).all()
@@ -60,7 +60,7 @@ def suggestions():
             "id": u.id,
             "filiere": u.filiere,
             "points_forts":  [c.competence_id for c in competences if c.type == 'maitrise'],
-            "points_faibles": [c.competence_id for c in competences if c.type == 'besoin']
+            "points_faibles": [c.competence_id for c in competences if c.type == 'a_ameliorer']
         }
 
     moi = profil(current_user)
@@ -70,7 +70,13 @@ def suggestions():
         p = profil(u)
         score = calculer_score(p, moi, disponibilites)
         if score > 0:
-            resultats.append({'user_id': u.id, 'nom': u.nom, 'prenom': u.prenom, 'score': score})
+            resultats.append({
+                'mentor_prenom': u.prenom,
+                'mentor_nom': u.nom,
+                'mentor_filiere': u.filiere,
+                'mentor_niveau': u.niveau,
+                'score': score
+            })
 
     resultats.sort(key=lambda x: x['score'], reverse=True)
-    return jsonify(resultats)
+    return jsonify({'suggestions': resultats})
