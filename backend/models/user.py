@@ -43,7 +43,7 @@ class User(db.Model, UserMixin):
     disponibilites = db.relationship('Disponibilite',  backref='user', lazy=True, cascade='all, delete-orphan')
 
     # ── Relationships Branche 04 — décommenter en B04 ──────────
-    # offres            = db.relationship('OffreDemande', backref='auteur',     lazy=True, cascade='all, delete-orphan')
+    # offres            = db.relationship('OffreDemande', backref='offres_auteur',     lazy=True, cascade='all, delete-orphan')
     # matchings_mentor  = db.relationship('Matching', foreign_keys='Matching.mentor_id',  backref='mentor',  lazy=True)
     # matchings_mentore = db.relationship('Matching', foreign_keys='Matching.mentore_id', backref='mentore', lazy=True)
 
