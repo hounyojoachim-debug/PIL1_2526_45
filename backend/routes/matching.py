@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from extensions import db
 from models.user import User
@@ -75,8 +75,68 @@ def suggestions():
                 'mentor_nom': u.nom,
                 'mentor_filiere': u.filiere,
                 'mentor_niveau': u.niveau,
+                'mentor_id': u.id,
                 'score': score
             })
 
     resultats.sort(key=lambda x: x['score'], reverse=True)
     return jsonify({'suggestions': resultats})
+
+@matching_bp.route('/contacter/<int:mentor_id>', methods=['POST'])
+@login_required
+def contacter(mentor_id):
+    """
+    Crée un matching + une conversation entre current_user (mentoré)
+    et mentor_id. Si ça existe déjà, récupère l'existant.
+    Redirige vers le chat.
+    """
+    from models.matching    import Matching
+    from models.conversation import Conversation
+    from models.disponibilite import Disponibilite
+
+    # Calculer le score pour ce mentor
+    def profil(u):
+        comps = UserCompetence.query.filter_by(user_id=u.id).all()
+        return {
+            "id": u.id,
+            "filiere": u.filiere,
+            "points_forts":   [c.competence_id for c in comps if c.type == "maitrise"],
+            "points_faibles": [c.competence_id for c in comps if c.type == "a_ameliorer"]
+        }
+
+    mentor  = db.session.get(User, mentor_id)
+    if not mentor:
+        flash("Mentor introuvable.", "danger")
+        return redirect(url_for("auth.tableau_de_bord"))
+
+    dispos = {}
+    for u in [mentor, current_user]:
+        d = Disponibilite.query.filter_by(user_id=u.id).all()
+        dispos[u.id] = [f"{x.jour}_{x.heure_debut}" for x in d]
+
+    score = calculer_score(profil(mentor), profil(current_user), dispos)
+
+    # Matching — chercher un existant ou créer
+    matching = Matching.query.filter_by(
+        mentor_id=mentor_id,
+        mentore_id=current_user.id
+    ).first()
+
+    if not matching:
+        matching = Matching(
+            mentor_id=mentor_id,
+            mentore_id=current_user.id,
+            score=score,
+            statut="actif"
+        )
+        db.session.add(matching)
+        db.session.commit()
+
+    # Conversation — chercher une existante ou créer
+    conv = Conversation.query.filter_by(matching_id=matching.id).first()
+    if not conv:
+        conv = Conversation(matching_id=matching.id)
+        db.session.add(conv)
+        db.session.commit()
+
+    return redirect(url_for("messagerie.chat", conv_id=conv.id))

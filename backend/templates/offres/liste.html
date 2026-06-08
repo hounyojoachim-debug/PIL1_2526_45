@@ -33,8 +33,8 @@
                         </div>
                     </div>
 
-                    <span class="badge {{ 'bg-success' if offre.type_offre == 'offre' else 'bg-warning text-dark' }} mb-2">
-                        {{ 'Propose du mentorat' if offre.type_offre == 'offre' else 'Cherche un mentor' }}
+                    <span class="badge {{ 'bg-success' if offre.type == 'offre' else 'bg-warning text-dark' }} mb-2">
+                        {{ 'Propose du mentorat' if offre.type == 'offre' else 'Cherche un mentor' }}
                     </span>
 
                     <p class="text-muted small mb-3">{{ offre.description }}</p>
@@ -45,10 +45,17 @@
                     </div>
                 </div>
                 <div class="card-footer bg-white border-0 pb-3 px-4">
-                    <a href="{{ url_for('messagerie.creer_conversation', offre_id=offre.id) }}"
-                       class="btn btn-primary btn-sm rounded-pill w-100 fw-bold">
-                        Contacter
-                    </a>
+                    {% if offre.auteur.id != current_user.id %}
+                    <form method="POST" action="{{ url_for('matching.contacter', mentor_id=offre.auteur.id) }}">
+                        <button type="submit" class="btn btn-primary btn-sm rounded-pill w-100 fw-bold">
+                            Contacter
+                        </button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary btn-sm rounded-pill w-100 fw-bold" disabled>
+                        Votre offre
+                    </button>
+                    {% endif %}
                 </div>
             </div>
         </div>

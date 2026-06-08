@@ -116,6 +116,11 @@ fetch("{{ url_for('matching.suggestions') }}")
                             </div>
                         </div>
                     </div>
+                    <form method="POST" action="/matching/contacter/${m.mentor_id}" class="mt-2">
+                        <button type="submit" class="btn btn-primary btn-sm w-100 rounded-pill">
+                            Contacter
+                        </button>
+                    </form>
                 </div>
             </div>`).join('');
     })

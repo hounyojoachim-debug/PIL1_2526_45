@@ -22,14 +22,9 @@ messagerie_bp = Blueprint('messagerie', __name__)
 @messagerie_bp.route('/conversations', methods=['GET'])
 @login_required
 def conversations():
-    """
-    Liste toutes les conversations de l'utilisateur connecté.
-    Un utilisateur voit une conversation s'il est mentor OU mentoré
-    dans le matching lié.
-    """
     from models.matching import Matching
-
-    conversations = (
+    from models.user import User
+    convs_raw = (
         db.session.query(Conversation)
         .join(Matching, Conversation.matching_id == Matching.id)
         .filter(
@@ -39,31 +34,34 @@ def conversations():
         .order_by(Conversation.date_creation.desc())
         .all()
     )
-
-    result = []
-    for conv in conversations:
-        dernier_msg = (
+    convs = []
+    for conv in convs_raw:
+        matching = db.session.get(Matching, conv.matching_id)
+        mentor   = db.session.get(User, matching.mentor_id)
+        mentore  = db.session.get(User, matching.mentore_id)
+        dernier  = (
             db.session.query(Message)
             .filter_by(conversation_id=conv.id)
             .order_by(Message.date_envoi.desc())
             .first()
         )
-        result.append({
-            'id': conv.id,
-            'matching_id': conv.matching_id,
-            'date_creation': conv.date_creation.isoformat(),
-            'dernier_message': dernier_msg.contenu if dernier_msg else None,
-            'dernier_message_date': (
-                dernier_msg.date_envoi.isoformat() if dernier_msg else None
-            ),
+        non_lus = Message.query.filter(
+            Message.conversation_id == conv.id,
+            Message.lu == False,
+            Message.expediteur_id != current_user.id
+        ).count()
+        convs.append({
+            'id':        conv.id,
+            'mentor_id': matching.mentor_id,
+            'mentor':    mentor,
+            'mentore':   mentore,
+            'dernier_msg': dernier.contenu if dernier else None,
+            'non_lus':   non_lus,
         })
-
-    return render_template('messagerie/conversations.html', conversations=conversations)
-
-
+    return render_template('messagerie/conversations.html', conversations=convs)
 @messagerie_bp.route('/conversations/<int:conv_id>', methods=['GET'])
 @login_required
-def historique(conv_id):
+def chat(conv_id):
     """
     Retourne tous les messages d'une conversation (du plus ancien
     au plus récent). Vérifie que l'utilisateur fait partie du matching.
@@ -95,15 +93,14 @@ def historique(conv_id):
             msg.lu = True
     db.session.commit()
 
-    result = [{
-        'id': m.id,
-        'expediteur_id': m.expediteur_id,
-        'contenu': m.contenu,
-        'date_envoi': m.date_envoi.isoformat(),
-        'lu': m.lu
-    } for m in msgs]
-
-    return jsonify(result), 200
+    from models.user import User
+    interlocuteur_id = matching.mentor_id if current_user.id == matching.mentore_id else matching.mentore_id
+    interlocuteur = db.session.get(User, interlocuteur_id)
+    return render_template('messagerie/chat.html',
+        conversation=conv,
+        messages=msgs,
+        interlocuteur=interlocuteur
+    )
 
 
 @messagerie_bp.route('/conversations', methods=['POST'])
