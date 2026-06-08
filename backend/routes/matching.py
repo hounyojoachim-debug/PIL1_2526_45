@@ -147,11 +147,13 @@ def contacter(mentor_id):
     score = calculer_score(profil(mentor), profil(current_user), dispos)
 
     # Matching — chercher un existant ou créer
-    matching = Matching.query.filter_by(
-        mentor_id=mentor_id,
-        mentore_id=current_user.id
+    from sqlalchemy import or_, and_
+    matching = Matching.query.filter(
+        or_(
+            and_(Matching.mentor_id == mentor_id, Matching.mentore_id == current_user.id),
+            and_(Matching.mentor_id == current_user.id, Matching.mentore_id == mentor_id)
+        )
     ).first()
-
     if not matching:
         matching = Matching(
             mentor_id=mentor_id,
