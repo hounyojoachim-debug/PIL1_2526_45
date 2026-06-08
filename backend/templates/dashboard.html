@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Tableau de bord — IFRI MentorLink{% endblock %}
+{% block title %}Tableau de bord — IFRI MentorLink
+{% endblock %}
 
 {% block content %}
 <div class="row g-4 mt-2">
@@ -115,7 +116,8 @@ fetch("{{ url_for('matching.suggestions') }}")
         // Section mentorés potentiels
         const mentorerContainer = document.getElementById('mentorer-container');
         if (data.mentores && data.mentores.length > 0) {
-            mentorerContainer.innerHTML = data.mentores.map(m => `
+            window._mentoresData = data.mentores;
+            mentorerContainer.innerHTML = data.mentores.map((m, idx) => `
             <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-3">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-3">
@@ -134,11 +136,17 @@ fetch("{{ url_for('matching.suggestions') }}")
                             </div>
                         </div>
                     </div>
-                    <form method="POST" action="/matching/contacter/${m.mentor_id}" class="mt-2">
-                        <button type="submit" class="btn btn-success btn-sm w-100 rounded-pill">
-                            Proposer mon aide
+                    <div class="d-flex gap-2 mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1"
+                            onclick="ouvrirModal(window._mentoresData[${idx}])">
+                            En savoir plus
                         </button>
-                    </form>
+                        <form method="POST" action="/matching/contacter/${m.mentor_id}" style="flex-grow:2;">
+                            <button type="submit" class="btn btn-success btn-sm w-100 rounded-pill">
+                                Proposer mon aide
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>`).join('');
         } else {
@@ -146,7 +154,8 @@ fetch("{{ url_for('matching.suggestions') }}")
                 <p class="mb-0">Personne à mentorer pour l'instant.</p></div>`;
         }
 
-        container.innerHTML = data.suggestions.map(m => `
+        window._mentorsData = data.suggestions;
+        container.innerHTML = data.suggestions.map((m, idx) => `
             <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-3">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-3">
@@ -165,11 +174,17 @@ fetch("{{ url_for('matching.suggestions') }}")
                             </div>
                         </div>
                     </div>
-                    <form method="POST" action="/matching/contacter/${m.mentor_id}" class="mt-2">
-                        <button type="submit" class="btn btn-primary btn-sm w-100 rounded-pill">
-                            Contacter
+                    <div class="d-flex gap-2 mt-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill flex-grow-1"
+                            onclick="ouvrirModal(window._mentorsData[${idx}])">
+                            En savoir plus
                         </button>
-                    </form>
+                        <form method="POST" action="/matching/contacter/${m.mentor_id}" style="flex-grow:2;">
+                            <button type="submit" class="btn btn-primary btn-sm w-100 rounded-pill">
+                                Contacter
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>`).join('');
     })
@@ -180,4 +195,70 @@ fetch("{{ url_for('matching.suggestions') }}")
             </div>`;
     });
 </script>
+<!-- Modal CDC — Compétences et disponibilités communes -->
+<div class="modal fade" id="modalDetails" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="modalNom"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <h6 class="text-primary fw-bold mb-2">
+            <i class="fas fa-check-circle me-1"></i>Compétences en commun
+          </h6>
+          <div id="modalCompetences"></div>
+        </div>
+        <div>
+          <h6 class="text-success fw-bold mb-2">
+            <i class="fas fa-clock me-1"></i>Disponibilités communes
+          </h6>
+          <div id="modalDispos"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.btn-savoir-plus');
+    if (!btn) return;
+    const idx = parseInt(btn.getAttribute('data-idx'));
+    const type = btn.getAttribute('data-type');
+    const m = type === 'mentor' ? window._mentorsData[idx] : window._mentoresData[idx];
+    if (!m) return;
+    ouvrirModal(m);
+});
+
+function ouvrirModal(m) {
+    const nom = m.mentor_prenom + ' ' + m.mentor_nom;
+    const competences = m.competences_communes || [];
+    const dispos = m.dispos_communes || [];
+    document.getElementById('modalNom').textContent = nom;
+
+    const compDiv = document.getElementById('modalCompetences');
+    if (competences && competences.length > 0) {
+        compDiv.innerHTML = competences.map(c =>
+            `<span class="badge bg-primary me-1 mb-1">${c}</span>`
+        ).join('');
+    } else {
+        compDiv.innerHTML = '<span class="text-muted small">Aucune compétence en commun</span>';
+    }
+
+    const dispoDiv = document.getElementById('modalDispos');
+    if (dispos && dispos.length > 0) {
+        dispoDiv.innerHTML = dispos.map(d => {
+            const parts = d.split('_');
+            return `<span class="badge bg-success me-1 mb-1">${parts[0]} ${parts[1] || ''}</span>`;
+        }).join('');
+    } else {
+        dispoDiv.innerHTML = '<span class="text-muted small">Aucune disponibilité commune</span>';
+    }
+
+    new bootstrap.Modal(document.getElementById('modalDetails')).show();
+}
+</script>
+
 {% endblock %}

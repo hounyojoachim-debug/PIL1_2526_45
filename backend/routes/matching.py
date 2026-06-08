@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from extensions import db
 from models.user import User
 from models.matching import Matching
-from models.competence import UserCompetence
+from models.competence import UserCompetence, Competence
 from models.disponibilite import Disponibilite
 
 matching_bp = Blueprint('matching', __name__)
@@ -63,6 +63,9 @@ def suggestions():
             "points_faibles": [c.competence_id for c in competences if c.type == 'a_ameliorer']
         }
 
+    # Dictionnaire id → nom pour les compétences
+    noms_comp = {c.id: c.nom for c in Competence.query.all()}
+
     moi = profil(current_user)
     resultats = []
 
@@ -70,13 +73,19 @@ def suggestions():
         p = profil(u)
         score = calculer_score(p, moi, disponibilites)
         if score > 0:
+            comp_communes = set(p["points_forts"]) & set(moi["points_faibles"])
+            dispo_mentor  = set(disponibilites.get(u.id, []))
+            dispo_moi     = set(disponibilites.get(current_user.id, []))
+            dispo_communes = dispo_mentor & dispo_moi
             resultats.append({
                 'mentor_prenom': u.prenom,
                 'mentor_nom': u.nom,
                 'mentor_filiere': u.filiere,
                 'mentor_niveau': u.niveau,
                 'mentor_id': u.id,
-                'score': score
+                'score': score,
+                'competences_communes': [noms_comp.get(c, str(c)) for c in comp_communes],
+                'dispos_communes': list(dispo_communes)
             })
 
     resultats.sort(key=lambda x: x['score'], reverse=True)
@@ -86,13 +95,19 @@ def suggestions():
         p = profil(u)
         score = calculer_score(moi, p, disponibilites)
         if score > 0:
+            comp_communes_m = set(moi["points_forts"]) & set(p["points_faibles"])
+            dispo_u   = set(disponibilites.get(u.id, []))
+            dispo_moi2 = set(disponibilites.get(current_user.id, []))
+            dispo_communes_m = dispo_u & dispo_moi2
             mentores.append({
                 'mentor_prenom': u.prenom,
                 'mentor_nom':    u.nom,
                 'mentor_filiere': u.filiere,
                 'mentor_niveau':  u.niveau,
                 'mentor_id':      u.id,
-                'score':          score
+                'score':          score,
+                'competences_communes': [noms_comp.get(c, str(c)) for c in comp_communes_m],
+                'dispos_communes': list(dispo_communes_m)
             })
     mentores.sort(key=lambda x: x['score'], reverse=True)
     return jsonify({'suggestions': resultats, 'mentores': mentores})

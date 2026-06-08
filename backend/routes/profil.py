@@ -42,42 +42,42 @@ def sauvegarder_profil():
     prenom = request.form.get('prenom', '').strip()
     bio    = request.form.get('bio',    '').strip()
 
-    # Expulser TOUS les objets trackés pour éviter l autoflush
-    db.session.expunge_all()
-
-    # Mettre à jour le user en SQL pur
-    db.session.execute(
-        db.text("UPDATE users SET nom=:nom, prenom=:prenom, bio=:bio WHERE id=:id"),
-        {"nom": nom, "prenom": prenom, "bio": bio, "id": uid}
-    )
-
-    # Supprimer et recréer compétences et dispos
-    db.session.execute(db.text("DELETE FROM user_competences WHERE user_id = :id"), {"id": uid})
-    db.session.execute(db.text("DELETE FROM disponibilites    WHERE user_id = :id"), {"id": uid})
-    db.session.commit()
-
-    for cid in request.form.getlist('competences_maitrise'):
-        db.session.execute(
-            db.text("INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"),
-            {"u": uid, "c": int(cid), "t": "maitrise"}
-        )
-    for cid in request.form.getlist('competences_ameliorer'):
-        db.session.execute(
-            db.text("INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"),
-            {"u": uid, "c": int(cid), "t": "a_ameliorer"}
-        )
-
+    competences_maitrise  = request.form.getlist('competences_maitrise')
+    # Exclure de ameliorer toute compétence déjà dans maitrise
+    competences_ameliorer = [c for c in request.form.getlist('competences_ameliorer') if c not in competences_maitrise]
     jours  = request.form.getlist('dispo_jour')
     debuts = request.form.getlist('dispo_debut')
     fins   = request.form.getlist('dispo_fin')
-    for jour, debut, fin in zip(jours, debuts, fins):
-        if jour and debut and fin:
-            db.session.execute(
-                db.text("INSERT INTO disponibilites (user_id, jour, heure_debut, heure_fin) VALUES (:u,:j,:d,:f)"),
-                {"u": uid, "j": jour, "d": debut, "f": fin}
-            )
 
-    db.session.commit()
-    flash('Profil mis à jour avec succès !', 'success')
-    return redirect(url_for('profil.voir_profil', user_id=uid))
+    # Transaction engine brute — aucune session SQLAlchemy impliquée
+    with db.engine.connect() as conn:
+        with conn.begin():
+            conn.execute(db.text(
+                "UPDATE users SET nom=:nom, prenom=:prenom, bio=:bio WHERE id=:id"
+            ), {"nom": nom, "prenom": prenom, "bio": bio, "id": uid})
 
+            conn.execute(db.text(
+                "DELETE FROM user_competences WHERE user_id = :id"
+            ), {"id": uid})
+            conn.execute(db.text(
+                "DELETE FROM disponibilites WHERE user_id = :id"
+            ), {"id": uid})
+
+            for cid in competences_maitrise:
+                conn.execute(db.text(
+                    "INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"
+                ), {"u": uid, "c": int(cid), "t": "maitrise"})
+
+            for cid in competences_ameliorer:
+                conn.execute(db.text(
+                    "INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"
+                ), {"u": uid, "c": int(cid), "t": "a_ameliorer"})
+
+            for jour, debut, fin in zip(jours, debuts, fins):
+                if jour and debut and fin:
+                    conn.execute(db.text(
+                        "INSERT INTO disponibilites (user_id, jour, heure_debut, heure_fin) VALUES (:u,:j,:d,:f)"
+                    ), {"u": uid, "j": jour, "d": debut, "f": fin})
+
+    flash("Profil mis à jour avec succès !", "success")
+    return redirect(url_for("profil.voir_profil", user_id=uid))
