@@ -80,7 +80,22 @@ def suggestions():
             })
 
     resultats.sort(key=lambda x: x['score'], reverse=True)
-    return jsonify({'suggestions': resultats})
+    # Mentorés potentiels — ceux que MOI je peux aider
+    mentores = []
+    for u in tous_users:
+        p = profil(u)
+        score = calculer_score(moi, p, disponibilites)
+        if score > 0:
+            mentores.append({
+                'mentor_prenom': u.prenom,
+                'mentor_nom':    u.nom,
+                'mentor_filiere': u.filiere,
+                'mentor_niveau':  u.niveau,
+                'mentor_id':      u.id,
+                'score':          score
+            })
+    mentores.sort(key=lambda x: x['score'], reverse=True)
+    return jsonify({'suggestions': resultats, 'mentores': mentores})
 
 @matching_bp.route('/contacter/<int:mentor_id>', methods=['POST'])
 @login_required

@@ -5,7 +5,7 @@
 <div class="row g-4 mt-2">
 
     <!-- ========== COLONNE GAUCHE : PROFIL ========== -->
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-2">
         <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white">
             <div class="card-body">
 
@@ -39,7 +39,7 @@
     </div>
 
     <!-- ========== COLONNE CENTRE : MENTORS RECOMMANDÉS ========== -->
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-4">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-bold text-dark mb-0">
@@ -58,8 +58,23 @@
 
     </div>
 
+    <!-- ========== SECTION : QUI JE PEUX MENTORER ========== -->
+    <div class="col-12 col-lg-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fas fa-chalkboard-teacher text-success me-2"></i>Qui je peux mentorer
+            </h5>
+            <span class="badge bg-success rounded-pill px-3">Algorithme IA</span>
+        </div>
+        <div id="mentorer-container">
+            <div class="text-center py-5 text-muted">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                Chargement...
+            </div>
+        </div>
+    </div>
     <!-- ========== COLONNE DROITE : MESSAGERIE RAPIDE ========== -->
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-2">
         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
             <div class="card-body">
 
@@ -97,6 +112,40 @@ fetch("{{ url_for('matching.suggestions') }}")
                 </div>`;
             return;
         }
+        // Section mentorés potentiels
+        const mentorerContainer = document.getElementById('mentorer-container');
+        if (data.mentores && data.mentores.length > 0) {
+            mentorerContainer.innerHTML = data.mentores.map(m => `
+            <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center
+                                    justify-content-center fw-bold flex-shrink-0"
+                             style="width:48px;height:48px;">
+                            ${m.mentor_prenom[0]}${m.mentor_nom[0]}
+                        </div>
+                        <div class="w-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="fw-bold mb-0">${m.mentor_prenom} ${m.mentor_nom}</h6>
+                                    <small class="text-muted">${m.mentor_filiere} — ${m.mentor_niveau}</small>
+                                </div>
+                                <span class="badge bg-success rounded-pill">${m.score}% Match</span>
+                            </div>
+                        </div>
+                    </div>
+                    <form method="POST" action="/matching/contacter/${m.mentor_id}" class="mt-2">
+                        <button type="submit" class="btn btn-success btn-sm w-100 rounded-pill">
+                            Proposer mon aide
+                        </button>
+                    </form>
+                </div>
+            </div>`).join('');
+        } else {
+            mentorerContainer.innerHTML = `<div class="text-center py-3 text-muted">
+                <p class="mb-0">Personne à mentorer pour l'instant.</p></div>`;
+        }
+
         container.innerHTML = data.suggestions.map(m => `
             <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-3">
                 <div class="card-body">

@@ -37,26 +37,47 @@ def modifier_profil():
 @profil_bp.route('/modifier', methods=['POST'])
 @login_required
 def sauvegarder_profil():
-    current_user.nom    = request.form.get('nom',    current_user.nom).strip()
-    current_user.prenom = request.form.get('prenom', current_user.prenom).strip()
-    current_user.bio    = request.form.get('bio',    '').strip()
+    uid    = current_user.id
+    nom    = request.form.get('nom',    '').strip()
+    prenom = request.form.get('prenom', '').strip()
+    bio    = request.form.get('bio',    '').strip()
 
-    # Supprimer et recréer les compétences
-    UserCompetence.query.filter_by(user_id=current_user.id).delete()
+    # Expulser TOUS les objets trackés pour éviter l autoflush
+    db.session.expunge_all()
+
+    # Mettre à jour le user en SQL pur
+    db.session.execute(
+        db.text("UPDATE users SET nom=:nom, prenom=:prenom, bio=:bio WHERE id=:id"),
+        {"nom": nom, "prenom": prenom, "bio": bio, "id": uid}
+    )
+
+    # Supprimer et recréer compétences et dispos
+    db.session.execute(db.text("DELETE FROM user_competences WHERE user_id = :id"), {"id": uid})
+    db.session.execute(db.text("DELETE FROM disponibilites    WHERE user_id = :id"), {"id": uid})
+    db.session.commit()
+
     for cid in request.form.getlist('competences_maitrise'):
-        db.session.add(UserCompetence(user_id=current_user.id, competence_id=int(cid), type='maitrise'))
+        db.session.execute(
+            db.text("INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"),
+            {"u": uid, "c": int(cid), "t": "maitrise"}
+        )
     for cid in request.form.getlist('competences_ameliorer'):
-        db.session.add(UserCompetence(user_id=current_user.id, competence_id=int(cid), type='a_ameliorer'))
+        db.session.execute(
+            db.text("INSERT INTO user_competences (user_id, competence_id, type) VALUES (:u,:c,:t)"),
+            {"u": uid, "c": int(cid), "t": "a_ameliorer"}
+        )
 
-    # Supprimer et recréer les disponibilités
-    Disponibilite.query.filter_by(user_id=current_user.id).delete()
     jours  = request.form.getlist('dispo_jour')
     debuts = request.form.getlist('dispo_debut')
     fins   = request.form.getlist('dispo_fin')
     for jour, debut, fin in zip(jours, debuts, fins):
         if jour and debut and fin:
-            db.session.add(Disponibilite(user_id=current_user.id, jour=jour, heure_debut=debut, heure_fin=fin))
+            db.session.execute(
+                db.text("INSERT INTO disponibilites (user_id, jour, heure_debut, heure_fin) VALUES (:u,:j,:d,:f)"),
+                {"u": uid, "j": jour, "d": debut, "f": fin}
+            )
 
     db.session.commit()
     flash('Profil mis à jour avec succès !', 'success')
-    return redirect(url_for('profil.voir_profil', user_id=current_user.id))
+    return redirect(url_for('profil.voir_profil', user_id=uid))
+

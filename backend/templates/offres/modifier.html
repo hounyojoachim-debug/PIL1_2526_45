@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Modifier l'offre{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card mx-auto" style="max-width:700px;">
+    <div class="card-body">
+      <h5 class="card-title mb-4">
+        <i class="fas fa-edit me-2 text-primary"></i>Modifier mon offre / demande
+      </h5>
+      <form method="POST" action="{{ url_for('offres.sauvegarder_offre', offre_id=offre.id) }}">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Type</label>
+          <select class="form-select" name="type_offre" required>
+            <option value="offre"   {% if offre.type == 'offre'   %}selected{% endif %}>Je propose du mentorat</option>
+            <option value="demande" {% if offre.type == 'demande' %}selected{% endif %}>Je cherche un mentor</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Description</label>
+          <textarea name="description" class="form-control" rows="3" required>{{ offre.description }}</textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Format</label>
+          <select class="form-select" name="format">
+            <option value="presentiel" {% if offre.format_seance == 'presentiel' %}selected{% endif %}>Présentiel</option>
+            <option value="en_ligne"   {% if offre.format_seance == 'en_ligne'   %}selected{% endif %}>En ligne</option>
+            <option value="les_deux"   {% if offre.format_seance == 'les_deux'   %}selected{% endif %}>Les deux</option>
+          </select>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary rounded-pill flex-grow-1">Enregistrer</button>
+          <a href="{{ url_for('offres.liste_offres') }}" class="btn btn-outline-secondary rounded-pill">Annuler</a>
+        </div>
+      </form>
+      <form method="POST" action="{{ url_for('offres.supprimer_offre', offre_id=offre.id) }}" class="mt-3">
+        <button type="submit" class="btn btn-outline-danger rounded-pill w-100"
+                onclick="return confirm('Supprimer cette offre ?')">
+          <i class="fas fa-trash me-1"></i>Supprimer cette offre
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
