@@ -582,6 +582,18 @@ PIL1_2526_45/
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">1</span>
                 <div class="flex-grow-1">
+                    <strong>Installer les outils nécessaires</strong>
+                    <p class="small text-muted mb-1">Ouvrez un terminal et tapez :</p>
+                    <pre><code>sudo apt update
+sudo apt install git python3 python3-pip python3-venv mysql-server -y
+sudo systemctl start mysql
+sudo systemctl enable mysql</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-4">
+                <span class="step-badge">2</span>
+                <div class="flex-grow-1">
                     <strong>Cloner le dépôt GitHub</strong>
                     <pre><code>git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
 cd PIL1_2526_45</code></pre>
@@ -589,65 +601,53 @@ cd PIL1_2526_45</code></pre>
             </div>
 
             <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">2</span>
+                <span class="step-badge">3</span>
                 <div class="flex-grow-1">
                     <strong>Créer et activer l'environnement virtuel Python</strong>
-                    <p class="small text-muted mb-1">L'environnement virtuel isole les dépendances du projet pour ne pas polluer votre installation Python globale.</p>
                     <pre><code>cd backend
 python3 -m venv venv
 source venv/bin/activate</code></pre>
-                    <p class="small mt-1">Vous devez voir <code>(venv)</code> au début de votre ligne de commande. C'est bon signe.</p>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">3</span>
-                <div class="flex-grow-1">
-                    <strong>Installer les dépendances Python</strong>
-                    <pre><code>pip install -r requirements.txt</code></pre>
-                    <p class="small mt-1">Cette commande installe Flask, SQLAlchemy, Flask-SocketIO, bcrypt, PyMySQL et python-dotenv. Ça peut prendre une minute.</p>
+                    <p class="small mt-1">Vous devez voir <code>(venv)</code> au début de votre ligne de commande.</p>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">4</span>
                 <div class="flex-grow-1">
-                    <strong>Créer la base de données MySQL</strong>
-                    <p class="small text-muted mb-1">Ouvrez un <strong>nouveau terminal</strong> (gardez le premier avec le venv actif). Connectez-vous à MySQL :</p>
-                    <pre><code># Connexion sans mot de passe (Ubuntu par défaut)
-sudo mysql -u root
-
-# Si votre MySQL a un mot de passe root :
-mysql -u root -p</code></pre>
-                    <p class="small mt-1 mb-1">Dans l'interface MySQL, tapez :</p>
-                    <pre><code>CREATE DATABASE ifri_mentorlink CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-EXIT;</code></pre>
+                    <strong>Installer les dépendances Python</strong>
+                    <pre><code>pip install -r ../requirements.txt</code></pre>
+                    <p class="small mt-1">Cette commande installe Flask, SQLAlchemy, Flask-SocketIO, bcrypt, PyMySQL et python-dotenv.</p>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">5</span>
                 <div class="flex-grow-1">
-                    <strong>Importer le schéma de la base de données</strong>
-                    <p class="small text-muted mb-1">Retournez dans le terminal avec le venv. Le fichier <code>schema.sql</code> est à la racine du dépôt.</p>
-                    <pre><code># Si MySQL sans mot de passe :
-mysql -u root ifri_mentorlink &lt; ../schema.sql
-
-# Si MySQL avec mot de passe (remplacez VOTRE_MDP) :
-mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; ../schema.sql</code></pre>
+                    <strong>Configurer MySQL</strong>
+                    <p class="small text-muted mb-1">Si MySQL vient d'être installé, connectez-vous avec sudo :</p>
+                    <pre><code>sudo mysql</code></pre>
+                    <p class="small mt-1 mb-1">Dans l'interface MySQL, tapez :</p>
+                    <pre><code>ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'root1234';
+FLUSH PRIVILEGES;
+EXIT;</code></pre>
+                    <div class="note-warn mt-2">Si MySQL avait déjà un mot de passe, utilisez-le à la place de <code>root1234</code> dans toutes les commandes suivantes.</div>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">6</span>
                 <div class="flex-grow-1">
-                    <strong>Charger les données de test (optionnel mais recommandé)</strong>
-                    <p class="small text-muted mb-1">Pour avoir des comptes prêts à utiliser sans avoir à s'inscrire :</p>
-                    <pre><code># Sans mot de passe MySQL :
-mysql -u root ifri_mentorlink &lt; data_test.sql
+                    <strong>Créer la base de données et importer le schéma</strong>
+                    <pre><code>mysql -u root -proot1234 &lt; ../schema.sql</code></pre>
+                    <p class="small mt-1">Cette commande crée automatiquement la base <code>ifri_mentorlink</code> et toutes ses tables.</p>
+                </div>
+            </div>
 
-# Avec mot de passe :
-mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; data_test.sql</code></pre>
+            <div class="d-flex align-items-start mb-4">
+                <span class="step-badge">7</span>
+                <div class="flex-grow-1">
+                    <strong>Charger les données de test (optionnel mais recommandé)</strong>
+                    <pre><code>mysql -u root -proot1234 ifri_mentorlink &lt; data_test.sql</code></pre>
                     <div class="note-success mt-2">
                         Comptes de test disponibles (mot de passe : <strong>Test1234!</strong>) :<br>
                         <code>tobie@ifri.bj</code> · <code>moubarak@ifri.bj</code> · <code>curtis@ifri.bj</code> · <code>charnel@ifri.bj</code> · <code>fanelle@ifri.bj</code>
@@ -656,43 +656,30 @@ mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; data_test.sql</code></pre>
             </div>
 
             <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">7</span>
+                <span class="step-badge">8</span>
                 <div class="flex-grow-1">
                     <strong>Créer le fichier de configuration <code>.env</code></strong>
-                    <p class="small text-muted mb-1">Ce fichier contient les informations sensibles (connexion BDD, clé secrète). Il doit être créé dans le dossier <code>backend/</code>.</p>
-                    <pre><code># Créer le fichier .env automatiquement :
-cat &gt; .env &lt;&lt; 'EOF'
-DATABASE_URL=mysql+pymysql://root:@localhost/ifri_mentorlink
-SECRET_KEY=mentorlink-secret-group45
-EOF</code></pre>
-                    <div class="note-warn mt-2">
-                        <strong>Si votre MySQL a un mot de passe root</strong>, remplacez <code>root:@localhost</code> par <code>root:VOTRE_MDP@localhost</code> dans la ligne DATABASE_URL.<br>
-                        Exemple : <code>DATABASE_URL=mysql+pymysql://root:monmdp123@localhost/ifri_mentorlink</code>
-                    </div>
+                    <p class="small text-muted mb-1">Ce fichier doit être créé dans le dossier <code>backend/</code> :</p>
+                    <pre><code>echo 'DATABASE_URL=mysql+pymysql://root:root1234@localhost/ifri_mentorlink' &gt; .env
+echo 'SECRET_KEY=mentorlink-secret-group45' &gt;&gt; .env</code></pre>
+                    <div class="note-warn mt-2">Si votre mot de passe MySQL est différent de <code>root1234</code>, remplacez-le dans la ligne DATABASE_URL.</div>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">8</span>
+                <span class="step-badge">9</span>
                 <div class="flex-grow-1">
                     <strong>Lancer l'application</strong>
-                    <pre><code># Depuis le dossier backend/ (venv actif) :
-python3 app.py</code></pre>
-                    <p class="small mt-1">Ou depuis la racine du dépôt avec le script de démarrage :</p>
-                    <pre><code>cd ..   # retour à la racine
-chmod +x lancer.sh
-./lancer.sh</code></pre>
+                    <pre><code>python3 app.py</code></pre>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-2">
-                <span class="step-badge">9</span>
+                <span class="step-badge">10</span>
                 <div class="flex-grow-1">
                     <strong>Ouvrir dans le navigateur</strong>
                     <p>Allez sur : <a href="http://127.0.0.1:5000/auth/connexion" target="_blank"><strong>http://127.0.0.1:5000/auth/connexion</strong></a></p>
-                    <div class="note-success">
-                        Si vous voyez la page de connexion IFRI_MentorLink, c'est bon — l'application tourne correctement.
-                    </div>
+                    <div class="note-success">Si vous voyez la page de connexion IFRI_MentorLink, c'est bon — l'application tourne correctement.</div>
                 </div>
             </div>
 
@@ -704,79 +691,85 @@ chmod +x lancer.sh
             <h5 class="mt-2 mb-3" style="color:var(--bleu)">Installation sur Windows — Étape par étape</h5>
 
             <div class="note-warn mb-3">
-                <strong>Avant de commencer :</strong> assurez-vous que Python est dans votre PATH (lors de l'installation de Python, cochez l'option "Add Python to PATH"). Si Git n'est pas installé, téléchargez Git pour Windows sur <a href="https://git-scm.com" target="_blank">git-scm.com</a>.
+                <strong>Important :</strong> Toutes les commandes doivent être exécutées dans <strong>Git Bash</strong>, pas dans PowerShell.
+                Git Bash s'ouvre depuis le menu Démarrer après installation de Git.
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">1</span>
                 <div class="flex-grow-1">
-                    <strong>Cloner le dépôt GitHub</strong>
-                    <p class="small text-muted mb-1">Ouvrez PowerShell ou Git Bash :</p>
-                    <pre><code>git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
-cd PIL1_2526_45</code></pre>
+                    <strong>Installer Git</strong>
+                    <p class="small text-muted mb-1">Télécharger sur <a href="https://git-scm.com/download/win" target="_blank">git-scm.com/download/win</a> → installer avec tous les paramètres par défaut.</p>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">2</span>
                 <div class="flex-grow-1">
-                    <strong>Créer et activer l'environnement virtuel Python</strong>
-                    <pre><code>cd backend
-python -m venv venv
-venv\Scripts\activate</code></pre>
-                    <p class="small mt-1">Vous devez voir <code>(venv)</code> au début de votre ligne de commande. Si PowerShell bloque l'exécution de scripts, lancez d'abord :</p>
-                    <pre><code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code></pre>
-                    <p class="small">Puis relancez <code>venv\Scripts\activate</code>.</p>
+                    <strong>Installer Python</strong>
+                    <p class="small text-muted mb-1">Télécharger sur <a href="https://python.org/downloads" target="_blank">python.org/downloads</a></p>
+                    <div class="note-warn mt-2"><strong>⚠️ Cocher impérativement "Add Python to PATH"</strong> lors de l'installation, sinon Python ne sera pas reconnu dans le terminal.</div>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">3</span>
                 <div class="flex-grow-1">
-                    <strong>Installer les dépendances Python</strong>
-                    <pre><code>pip install -r requirements.txt</code></pre>
+                    <strong>Installer MySQL</strong>
+                    <p class="small text-muted mb-1">Télécharger MySQL Community Server sur <a href="https://dev.mysql.com/downloads/installer/" target="_blank">dev.mysql.com/downloads/installer/</a></p>
+                    <ol class="small">
+                        <li>Choisir "Server only" → Next → Execute</li>
+                        <li>Lors de la configuration, définir un mot de passe root (notez-le bien)</li>
+                        <li>Laisser tous les autres paramètres par défaut → Finish</li>
+                    </ol>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">4</span>
                 <div class="flex-grow-1">
-                    <strong>Créer la base de données MySQL</strong>
-                    <p class="small text-muted mb-1"><strong>Option A — MySQL Workbench</strong> (interface graphique, plus simple) :</p>
-                    <ol class="small">
-                        <li>Ouvrir MySQL Workbench → Se connecter à votre instance locale</li>
-                        <li>Cliquer sur l'icône "New Schema" (cylindre avec un +)</li>
-                        <li>Nommer le schéma : <code>ifri_mentorlink</code></li>
-                        <li>Charset : <code>utf8mb4</code> · Collation : <code>utf8mb4_unicode_ci</code></li>
-                        <li>Cliquer "Apply" puis "Apply" à nouveau dans la fenêtre de confirmation</li>
-                    </ol>
-                    <p class="small text-muted mt-2 mb-1"><strong>Option B — Terminal MySQL</strong> :</p>
-                    <pre><code>mysql -u root -p
-# Saisir votre mot de passe MySQL
-CREATE DATABASE ifri_mentorlink CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-EXIT;</code></pre>
+                    <strong>Ouvrir Git Bash et cloner le dépôt</strong>
+                    <p class="small text-muted mb-1">Menu Démarrer → Git Bash, puis :</p>
+                    <pre><code>git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
+cd PIL1_2526_45</code></pre>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">5</span>
                 <div class="flex-grow-1">
-                    <strong>Importer le schéma de la base de données</strong>
-                    <p class="small text-muted mb-1">Le fichier <code>schema.sql</code> se trouve à la racine du dépôt (un niveau au-dessus de <code>backend/</code>).</p>
-                    <pre><code># Depuis PowerShell ou Git Bash (remplacez VOTRE_MDP) :
-mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; ..\schema.sql</code></pre>
-                    <p class="small text-muted mt-2 mb-1">Ou avec MySQL Workbench :</p>
-                    <ol class="small mb-0">
-                        <li>Menu : <strong>File → Run SQL Script</strong></li>
-                        <li>Sélectionner le fichier <code>schema.sql</code> dans le dossier racine du dépôt</li>
-                        <li>Sélectionner le schéma <code>ifri_mentorlink</code> dans la liste déroulante</li>
-                        <li>Cliquer "Run"</li>
-                    </ol>
+                    <strong>Créer et activer l'environnement virtuel Python</strong>
+                    <pre><code>cd backend
+python -m venv venv
+source venv/Scripts/activate</code></pre>
+                    <p class="small mt-1">Vous devez voir <code>(venv)</code> au début de votre ligne de commande.</p>
+                    <div class="note-info mt-2">Si Git Bash bloque l'activation, ouvrez PowerShell et tapez :<br>
+                    <code>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code><br>
+                    Puis revenez dans Git Bash et relancez <code>source venv/Scripts/activate</code>.</div>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
                 <span class="step-badge">6</span>
+                <div class="flex-grow-1">
+                    <strong>Installer les dépendances Python</strong>
+                    <pre><code>pip install -r ../requirements.txt</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-4">
+                <span class="step-badge">7</span>
+                <div class="flex-grow-1">
+                    <strong>Ajouter MySQL au PATH et importer le schéma</strong>
+                    <p class="small text-muted mb-1">Dans Git Bash, ajouter MySQL au PATH (à faire à chaque ouverture de Git Bash) :</p>
+                    <pre><code>export PATH=$PATH:"/c/Program Files/MySQL/MySQL Server 8.0/bin"</code></pre>
+                    <p class="small mt-1 mb-1">Puis importer le schéma (remplacez VOTRE_MDP par votre mot de passe MySQL) :</p>
+                    <pre><code>mysql -u root -pVOTRE_MDP &lt; ../schema.sql</code></pre>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-start mb-4">
+                <span class="step-badge">8</span>
                 <div class="flex-grow-1">
                     <strong>Charger les données de test (optionnel mais recommandé)</strong>
                     <pre><code>mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; data_test.sql</code></pre>
@@ -788,39 +781,30 @@ mysql -u root -pVOTRE_MDP ifri_mentorlink &lt; ..\schema.sql</code></pre>
             </div>
 
             <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">7</span>
+                <span class="step-badge">9</span>
                 <div class="flex-grow-1">
                     <strong>Créer le fichier de configuration <code>.env</code></strong>
-                    <p class="small text-muted mb-1">Créez un fichier texte nommé <code>.env</code> dans le dossier <code>backend/</code>. Ouvrez le Bloc-notes (ou tout autre éditeur) et tapez :</p>
-                    <pre><code>DATABASE_URL=mysql+pymysql://root:VOTRE_MDP@localhost/ifri_mentorlink
-SECRET_KEY=mentorlink-secret-group45</code></pre>
-                    <p class="small mt-1">Remplacez <code>VOTRE_MDP</code> par votre mot de passe MySQL root. Si pas de mot de passe, laissez vide : <code>root:@localhost</code>.</p>
-                    <div class="note-warn mt-2">
-                        <strong>Important :</strong> Le fichier doit s'appeler exactement <code>.env</code> (avec le point devant, pas <code>.env.txt</code>). Dans Windows Explorer, activez l'affichage des extensions de fichier pour le vérifier.
-                    </div>
+                    <p class="small text-muted mb-1">Dans Git Bash, depuis le dossier <code>backend/</code> :</p>
+                    <pre><code>echo 'DATABASE_URL=mysql+pymysql://root:VOTRE_MDP@localhost/ifri_mentorlink' &gt; .env
+echo 'SECRET_KEY=mentorlink-secret-group45' &gt;&gt; .env</code></pre>
+                    <div class="note-warn mt-2">Remplacez <code>VOTRE_MDP</code> par votre mot de passe MySQL dans toutes les commandes.</div>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-4">
-                <span class="step-badge">8</span>
+                <span class="step-badge">10</span>
                 <div class="flex-grow-1">
                     <strong>Lancer l'application</strong>
-                    <p class="small text-muted mb-1">Dans PowerShell ou Git Bash, avec le venv activé, depuis le dossier <code>backend/</code> :</p>
                     <pre><code>python app.py</code></pre>
-                    <p class="small mt-1">Vous devez voir quelque chose comme :</p>
-                    <pre><code> * Running on http://0.0.0.0:5000
- * Running on http://127.0.0.1:5000</code></pre>
                 </div>
             </div>
 
             <div class="d-flex align-items-start mb-2">
-                <span class="step-badge">9</span>
+                <span class="step-badge">11</span>
                 <div class="flex-grow-1">
                     <strong>Ouvrir dans le navigateur</strong>
                     <p>Allez sur : <a href="http://127.0.0.1:5000/auth/connexion" target="_blank"><strong>http://127.0.0.1:5000/auth/connexion</strong></a></p>
-                    <div class="note-success">
-                        Si vous voyez la page de connexion IFRI_MentorLink, c'est bon — l'application tourne correctement.
-                    </div>
+                    <div class="note-success">Si vous voyez la page de connexion IFRI_MentorLink, c'est bon.</div>
                 </div>
             </div>
 

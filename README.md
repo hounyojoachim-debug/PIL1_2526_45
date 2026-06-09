@@ -33,58 +33,108 @@ IFRI_MentorLink permet aux étudiants de l'IFRI de trouver un mentor ou de propo
 - MySQL 8+
 - Git
 
-### Ubuntu / Linux
+---
+
+### 🐧 Ubuntu / Linux
 
 ```bash
-# 1. Cloner le dépôt
-git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
-cd PIL1_2526_45/backend
+# 1. Installer les outils nécessaires
+sudo apt update
+sudo apt install git python3 python3-pip python3-venv mysql-server -y
+sudo systemctl start mysql
+sudo systemctl enable mysql
 
-# 2. Environnement virtuel
+# 2. Cloner le dépôt
+git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
+cd PIL1_2526_45
+
+# 3. Environnement virtuel
+cd backend
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
 
-# 3. Créer la BDD
-sudo mysql -u root -e "CREATE DATABASE ifri_mentorlink CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+# 4. Installer les dépendances Python
+pip install -r ../requirements.txt
 
-# 4. Importer le schéma
-mysql -u root ifri_mentorlink < ../schema.sql
+# 5. Configurer MySQL (première fois uniquement)
+# Si MySQL vient d'être installé, connectez-vous avec sudo :
+sudo mysql
+# Dans MySQL, tapez :
+# ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'root1234';
+# FLUSH PRIVILEGES;
+# EXIT;
 
-# 5. (Optionnel) Données de test
-mysql -u root ifri_mentorlink < data_test.sql
+# 6. Créer la BDD et importer le schéma (une seule commande)
+mysql -u root -proot1234 < ../schema.sql
 
-# 6. Fichier .env (à créer dans backend/)
-echo 'DATABASE_URL=mysql+pymysql://root:@localhost/ifri_mentorlink' > .env
+# 7. Charger les données de test
+mysql -u root -proot1234 ifri_mentorlink < data_test.sql
+
+# 8. Créer le fichier .env dans backend/
+echo 'DATABASE_URL=mysql+pymysql://root:root1234@localhost/ifri_mentorlink' > .env
 echo 'SECRET_KEY=mentorlink-secret-group45' >> .env
 
-# 7. Lancer
+# 9. Lancer l'application
 python3 app.py
 ```
 
-### Windows
+> ⚠️ Remplacez `root1234` par votre mot de passe MySQL si différent.
 
-```powershell
-# 1. Cloner le dépôt
+---
+
+### 🪟 Windows
+
+> **Important :** Toutes les commandes Windows doivent être exécutées dans **Git Bash**, pas dans PowerShell.
+
+**Étape 1 — Installer Git**
+Télécharger sur https://git-scm.com/download/win → installer avec tous les paramètres par défaut.
+
+**Étape 2 — Installer Python**
+Télécharger sur https://python.org/downloads → lors de l'installation, **cocher "Add Python to PATH"**.
+
+**Étape 3 — Installer MySQL**
+Télécharger MySQL Community Server sur https://dev.mysql.com/downloads/installer/ → choisir "Server only" → lors de la configuration, définir un mot de passe root (notez-le bien).
+
+**Étape 4 — Ouvrir Git Bash** (menu Démarrer → Git Bash)
+
+```bash
+# 5. Ajouter MySQL au PATH (à faire à chaque ouverture de Git Bash)
+export PATH=$PATH:"/c/Program Files/MySQL/MySQL Server 8.0/bin"
+
+# 6. Cloner le dépôt
 git clone https://github.com/hounyojoachim-debug/PIL1_2526_45.git
-cd PIL1_2526_45\backend
+cd PIL1_2526_45
 
-# 2. Environnement virtuel
+# 7. Environnement virtuel
+cd backend
 python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
 
-# 3-4. Créer la BDD et importer le schéma via MySQL Workbench ou :
-mysql -u root -p -e "CREATE DATABASE ifri_mentorlink CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root -pVOTRE_MDP ifri_mentorlink < ..\schema.sql
+# Autoriser l'exécution de scripts (dans PowerShell, une seule fois) :
+# Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-# 5. Fichier .env — créer manuellement dans backend/ avec ce contenu :
-# DATABASE_URL=mysql+pymysql://root:VOTRE_MDP@localhost/ifri_mentorlink
-# SECRET_KEY=mentorlink-secret-group45
+# Activer le venv dans Git Bash :
+source venv/Scripts/activate
 
-# 6. Lancer
+# 8. Installer les dépendances Python
+pip install -r ../requirements.txt
+
+# 9. Créer la BDD et importer le schéma
+mysql -u root -pVOTRE_MDP < ../schema.sql
+
+# 10. Charger les données de test
+mysql -u root -pVOTRE_MDP ifri_mentorlink < data_test.sql
+
+# 11. Créer le fichier .env dans backend/
+echo 'DATABASE_URL=mysql+pymysql://root:VOTRE_MDP@localhost/ifri_mentorlink' > .env
+echo 'SECRET_KEY=mentorlink-secret-group45' >> .env
+
+# 12. Lancer l'application
 python app.py
 ```
+
+> ⚠️ Remplacez `VOTRE_MDP` par votre mot de passe MySQL défini lors de l'installation.
+
+---
 
 ### Accéder à l'application
 
@@ -103,6 +153,16 @@ Après avoir chargé `data_test.sql`, ces comptes sont disponibles :
 | curtis@ifri.bj | Test1234! | IA |
 | charnel@ifri.bj | Test1234! | IM |
 | fanelle@ifri.bj | Test1234! | GL |
+
+---
+
+## Démo messagerie temps réel
+
+Pour tester la messagerie SocketIO :
+1. Ouvre **Chrome** → connecte-toi avec `tobie@ifri.bj`
+2. Ouvre **Firefox** → connecte-toi avec `moubarak@ifri.bj`
+3. Ouvre la même conversation dans les deux navigateurs
+4. Envoie un message → il apparaît instantanément dans l'autre navigateur
 
 ---
 
