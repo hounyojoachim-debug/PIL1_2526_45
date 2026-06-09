@@ -55,6 +55,7 @@ source venv/bin/activate
 
 # 4. Installer les dépendances Python
 pip install -r ../requirements.txt
+pip install cryptography
 
 # 5. Configurer MySQL (première fois uniquement)
 # Si MySQL vient d'être installé, connectez-vous avec sudo :
@@ -117,6 +118,7 @@ source venv/Scripts/activate
 
 # 8. Installer les dépendances Python
 pip install -r ../requirements.txt
+pip install cryptography
 
 # 9. Créer la BDD et importer le schéma
 mysql -u root -pVOTRE_MDP < ../schema.sql
