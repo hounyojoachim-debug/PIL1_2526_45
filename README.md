@@ -1,8 +1,5 @@
 # IFRI_MentorLink — PIL1_2526_45
 
-
-https://drive.google.com/file/d/1e5ChWuX8v3YbbZ0KCHbkV1e-HuMbQDYb/view?usp=drive_link
-
 Plateforme web de mise en relation mentorale entre étudiants IFRI.  
 Projet intégrateur 2025-2026 · Groupe 45 · Université d'Abomey-Calavi
 
